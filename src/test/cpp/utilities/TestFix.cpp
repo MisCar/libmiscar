@@ -19,5 +19,5 @@ TEST(Fix, ReturnsOriginalWhenOutsideOfRange)
 {
   EXPECT_EQ(miscar::utilities::Fix(-1.2, 1), -1.2);
   EXPECT_EQ(miscar::utilities::Fix(2.9, 2), 2.9);
-  EXPECT_EQ(miscar::utilities::Fix(0.24, 0.1), 0.24);
+  EXPECT_EQ(miscar::utilities::Fix(24, 10), 24);
 }

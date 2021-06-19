@@ -1,0 +1,31 @@
+name: Check
+on:
+    push:
+        branches: [main]
+jobs:
+    all:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up JDK 11
+              uses: actions/setup-java@v2
+              with:
+                  java-version: "11"
+                  distribution: "adopt"
+            - name: Set up clang format
+              run: |
+                  sudo apt-get install clang-format-12
+                  sudo ln -sf /usr/bin/clang-format-12 /usr/bin/clang-format
+                  sed -i 's/clangFormat(clangFormatVersion)/clangFormat(clangFormatVersion)/g' build.gradle
+                  sed -i 's/def clangFormatVersion = "clang-format --version"\.execute()\.text\.substring(20)\.trim()/def clangFormatVersion = "clang-format-12 --version"\.execute()\.text\.substring(28)\.trim()/g' build.gradle
+                  cat build.gradle
+            - name: Make gradlew executable
+              run: chmod +x ./gradlew
+            - name: Install roboRIO Toolchain
+              run: ./gradlew installRoboRioToolchain
+            - name: Check Format
+              run: ./gradlew spotlessCheck
+            - name: Run Tests
+              run: ./gradlew check
+            - name: Build All
+              run: ./gradlew build
