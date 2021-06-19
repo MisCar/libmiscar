@@ -1,0 +1,85 @@
+plugins {
+    id "cpp"
+    id "google-test-test-suite"
+    id "edu.wpi.first.GradleRIO" version "2021.3.1"
+
+    id "com.diffplug.spotless" version "5.12.5"
+}
+
+deploy {
+    targets {
+        roboRIO("roborio") {
+            team = frc.getTeamOrDefault(1574)
+        }
+    }
+    artifacts {
+        frcNativeArtifact('frcCpp') {
+            targets << "roborio"
+            component = 'frcUserProgram'
+            debug = frc.getDebugOrDefault(false)
+        }
+    }
+}
+
+dependencies {
+    simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
+    simulation wpi.deps.sim.driverstation(wpi.platforms.desktop, true)
+}
+
+sim {
+}
+
+model {
+    components {
+        frcUserProgram(NativeExecutableSpec) {
+            targetPlatform wpi.platforms.roborio
+            targetPlatform wpi.platforms.desktop
+
+            sources.cpp {
+                source {
+                    srcDir 'src/main/cpp'
+                    include '**/*.cpp', '**/*.cc'
+                }
+                exportedHeaders {
+                    srcDir 'src/main/include'
+                    srcDir 'src/main/cpp'
+                }
+            }
+
+            wpi.deps.vendor.cpp(it)
+            wpi.deps.wpilib(it)
+        }
+    }
+    testSuites {
+        frcUserProgramTest(GoogleTestTestSuiteSpec) {
+            testing $.components.frcUserProgram
+
+            sources.cpp {
+                source {
+                    srcDir 'src/test/cpp'
+                    include '**/*.cpp'
+                }
+            }
+
+            wpi.deps.vendor.cpp(it)
+            wpi.deps.wpilib(it)
+            wpi.deps.googleTest(it)
+        }
+    }
+}
+
+def clangFormatVersion = "clang-format --version".execute().text.substring(20).trim()
+
+spotless {
+    format "cpp", {
+        target "src/**/*.cpp"
+
+        clangFormat(clangFormatVersion)
+    }
+
+    format "h", {
+        target "src/**/*.h"
+
+        clangFormat(clangFormatVersion)
+    }
+}
