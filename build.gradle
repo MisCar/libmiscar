@@ -13,9 +13,9 @@ deploy {
         }
     }
     artifacts {
-        frcNativeArtifact('frcCpp') {
+        frcNativeArtifact("frcCpp") {
             targets << "roborio"
-            component = 'frcUserProgram'
+            component = "frcUserProgram"
             debug = frc.getDebugOrDefault(false)
         }
     }
@@ -37,12 +37,11 @@ model {
 
             sources.cpp {
                 source {
-                    srcDir 'src/main/cpp'
-                    include '**/*.cpp', '**/*.cc'
+                    srcDir "src/main/cpp"
+                    include "**/*.cpp", "**/*.cc"
                 }
                 exportedHeaders {
-                    srcDir 'src/main/include'
-                    srcDir 'src/main/cpp'
+                    srcDir "src/main/include"
                 }
             }
 
@@ -56,8 +55,8 @@ model {
 
             sources.cpp {
                 source {
-                    srcDir 'src/test/cpp'
-                    include '**/*.cpp'
+                    srcDir "src/test/cpp"
+                    include "**/*.cpp"
                 }
             }
 

@@ -12,7 +12,16 @@
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true,
-    "**/*~": true
+    "**/*~": true,
+    "**/.cache": true,
+    "**/.gradle": true,
+    "**/.wpilib": true,
+    "**/external": true,
+    "**/gradle": true,
+    "**/build": true,
+    "**/compile_commands.json": true,
+    "**/gradlew*": true,
+    "**/vendordeps": true
   },
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
   "files.associations": {

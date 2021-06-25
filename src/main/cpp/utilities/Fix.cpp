@@ -1,4 +1,4 @@
-#include "Fix.h"
+#include "utilities/Fix.h"
 #include <cmath>
 
 double miscar::utilities::Fix(double value, double range)
