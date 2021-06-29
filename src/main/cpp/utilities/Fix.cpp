@@ -3,5 +3,5 @@
 
 double miscar::utilities::Fix(double value, double range)
 {
-  return (abs(value) < range) ? 0 : value;
+  return (std::abs(value) < range) ? 0 : value;
 }
