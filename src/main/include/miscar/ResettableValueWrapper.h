@@ -1,6 +1,6 @@
-#include "utilities/ValueWrapper.h"
+#include "miscar/ValueWrapper.h"
 
-namespace miscar::utilities
+namespace miscar
 {
   template <typename T> class ResettableValueWrapper : public ValueWrapper<T>
   {
@@ -11,15 +11,15 @@ namespace miscar::utilities
   private:
     T m_initial;
   };
-} // namespace miscar::utilities
+} // namespace miscar
 
 template <typename T>
-miscar::utilities::ResettableValueWrapper<T>::ResettableValueWrapper(T value)
+miscar::ResettableValueWrapper<T>::ResettableValueWrapper(T value)
     : ValueWrapper<T>(value), m_initial(value)
 {
 }
 
-template <typename T> void miscar::utilities::ResettableValueWrapper<T>::Reset()
+template <typename T> void miscar::ResettableValueWrapper<T>::Reset()
 {
   ValueWrapper<T>::Set(m_initial);
 }

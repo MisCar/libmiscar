@@ -1,6 +1,6 @@
 #pragma once
 
-namespace miscar::utilities
+namespace miscar
 {
   double Fix(double value, double range);
 }

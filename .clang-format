@@ -1,10 +1,1 @@
-BasedOnStyle: LLVM
-TabWidth: 4
-ColumnLimit: 100
-NamespaceIndentation: All
-BinPackArguments: false
-BinPackParameters: false
-AlignAfterOpenBracket: AlwaysBreak
-AlignConsecutiveAssignments: Consecutive
-InsertTrailingCommas: Wrapped
-BreakBeforeBraces: Allman
+BasedOnStyle: Google
