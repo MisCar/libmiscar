@@ -67,7 +67,8 @@ model {
     }
 }
 
-def clangFormatVersion = "clang-format --version".execute().text.substring(20).trim()
+def clangFormatVersion = "clang-format --version".execute().text
+clangFormatVersion = clangFormatVersion.substring(clangFormatVersion.indexOf("version") + 8).trim()
 
 spotless {
     format "cpp", {

@@ -2,7 +2,6 @@
 
 #include "miscar/ResettableValueWrapper.h"
 
-
 namespace miscar {
 template <typename T>
 class LazyCallback : public ResettableValueWrapper<T> {

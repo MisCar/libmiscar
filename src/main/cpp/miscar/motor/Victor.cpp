@@ -5,7 +5,6 @@
 
 #include "miscar/Log.h"
 
-
 using namespace miscar;
 
 Victor::Victor(int id) : BaseMotorController(id, "Victor SRX"), VictorSPX(id) {}

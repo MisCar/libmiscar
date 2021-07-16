@@ -1,17 +1,16 @@
-#include "miscar/LazyCallback.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(LazyCallback, SetsValueWhenSetting)
-{
+#include "miscar/LazyCallback.h"
+
+TEST(LazyCallback, SetsValueWhenSetting) {
   miscar::LazyCallback<int> c(0, [](int x) {});
   EXPECT_EQ(c.Get(), 0);
   c.Set(1);
   EXPECT_EQ(c.Get(), 1);
 }
 
-TEST(LazyCallback, CallsCallbackWhenDifferent)
-{
+TEST(LazyCallback, CallsCallbackWhenDifferent) {
   int call_count = 0;
   miscar::LazyCallback<int> c(0, [&call_count](int x) { call_count++; });
   EXPECT_EQ(call_count, 0);
@@ -21,8 +20,7 @@ TEST(LazyCallback, CallsCallbackWhenDifferent)
   EXPECT_EQ(call_count, 2);
 }
 
-TEST(LazyCallback, DoesNotCallCallbackWhenTheSame)
-{
+TEST(LazyCallback, DoesNotCallCallbackWhenTheSame) {
   int call_count = 0;
   miscar::LazyCallback<int> c(0, [&call_count](int x) { call_count++; });
   EXPECT_EQ(call_count, 0);
