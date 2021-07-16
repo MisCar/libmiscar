@@ -10,7 +10,7 @@ file(GLOB_RECURSE TESTS "src/test/cpp/*.*")
 add_executable(release ${SOURCES})
 set_target_properties(release PROPERTIES LINKER_LANGUAGE CXX)
 
-target_include_directories(release PRIVATE src/main/include)
+target_include_directories(release PRIVATE src/main/cpp)
 
 set(INCLUDES
 	external/api/include
