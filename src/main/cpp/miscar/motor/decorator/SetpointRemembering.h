@@ -1,3 +1,5 @@
+#pragma once
+
 #include <optional>
 #include <type_traits>
 #include <utility>
@@ -6,15 +8,16 @@
 
 namespace miscar {
 
-template <class M, typename = std::enable_if<std::is_base_of<M, Motor>::value>>
-class SetpointRemembering : public M {
+template <typename T,
+          typename = std::enable_if<std::is_base_of<T, Motor>::value>>
+class SetpointRemembering : public T {
  public:
-  SetpointRemembering(const M &m) : M(m) {}
+  SetpointRemembering(const T &t) : T(t) {}
 
   void SetOutput(double output, Motor::Mode mode) override {
     m_output = output;
     m_mode = mode;
-    M::SetOutput(output, mode);
+    T::SetOutput(output, mode);
   }
 
   std::optional<double> GetOutput() { return m_output; }
