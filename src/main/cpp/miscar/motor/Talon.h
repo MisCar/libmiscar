@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/can/TalonSRX.h>
 
@@ -6,7 +8,7 @@
 namespace miscar {
 
 class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
-  explicit Talon(int id);
+  Talon(int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

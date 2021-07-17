@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 
 #include "miscar/motor/Motor.h"
@@ -7,7 +9,7 @@ namespace miscar {
 /** AKA Talon FX */
 class Falcon : public Motor, public ctre::phoenix::motorcontrol::can::TalonFX {
  public:
-  explicit Falcon(int id);
+  Falcon(int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

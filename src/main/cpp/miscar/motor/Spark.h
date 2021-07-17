@@ -1,3 +1,5 @@
+#pragma once
+
 #include <rev/CANSparkMax.h>
 
 #include "miscar/motor/Motor.h"
@@ -7,7 +9,7 @@ namespace miscar {
 /** Used for NEO motors. We only use Sparks for brushless motors */
 class Spark : public Motor, public rev::CANSparkMax {
  public:
-  explicit Spark(int id);
+  Spark(int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

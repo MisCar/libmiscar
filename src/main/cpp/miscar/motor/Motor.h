@@ -1,3 +1,5 @@
+#pragma once
+
 #include <units/current.h>
 
 #include "miscar/PID.h"

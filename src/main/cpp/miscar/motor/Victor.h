@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/can/VictorSPX.h>
 
@@ -7,7 +9,7 @@ namespace miscar {
 
 class Victor : public Motor,
                public ctre::phoenix::motorcontrol::can::VictorSPX {
-  explicit Victor(int id);
+  Victor(int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;
