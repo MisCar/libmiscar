@@ -1,9 +1,12 @@
+// Copyright (c) MisCar 1574
+
 #include "miscar/motor/Falcon.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 
 using namespace miscar;
+using namespace units;
 
 Falcon::Falcon(int id)
     : BaseMotorController(id, "Talon FX"),

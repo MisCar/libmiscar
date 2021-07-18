@@ -1,8 +1,11 @@
+// Copyright (c) MisCar 1574
+
 #include "miscar/motor/Spark.h"
 
 #include <rev/CANSparkMax.h>
 
 using namespace miscar;
+using namespace units;
 
 Spark::Spark(int id)
     : rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless) {}

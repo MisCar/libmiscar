@@ -1,9 +1,12 @@
+// Copyright (c) MisCar 1574
+
 #include "miscar/motor/Talon.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 
 using namespace miscar;
+using namespace units;
 
 Talon::Talon(int id)
     : BaseMotorController(id, "Talon SRX"),

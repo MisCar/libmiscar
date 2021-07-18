@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #include "miscar/Log.h"
 
 #include <frc/DriverStation.h>

@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #include "miscar/Fix.h"
 
 #include <cmath>

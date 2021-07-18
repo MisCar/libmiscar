@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #pragma once
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
@@ -16,7 +18,7 @@ class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
 
   void SetOutput(double output, Mode mode) override;
   void SetPID(PID pid) override;
-  void SetCurrentLimit(ampere_t limit) override;
+  void SetCurrentLimit(units::ampere_t limit) override;
   void SetPosition(double position) override;
   void Brake() override;
   void Coast() override;

@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #pragma once
 
 #include <rev/CANSparkMax.h>
@@ -17,7 +19,7 @@ class Spark : public Motor, public rev::CANSparkMax {
 
   void SetOutput(double output, Mode mode) override;
   void SetPID(PID pid) override;
-  void SetCurrentLimit(ampere_t limit) override;
+  void SetCurrentLimit(units::ampere_t limit) override;
   void SetPosition(double position) override;
   void Brake() override;
   void Coast() override;

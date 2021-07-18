@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #include "miscar/motor/Victor.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
@@ -6,6 +8,7 @@
 #include "miscar/Log.h"
 
 using namespace miscar;
+using namespace units;
 
 Victor::Victor(int id) : BaseMotorController(id, "Victor SRX"), VictorSPX(id) {}
 

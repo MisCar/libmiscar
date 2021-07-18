@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #include <gtest/gtest.h>
 #include <hal/HAL.h>
 

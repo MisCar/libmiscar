@@ -1,3 +1,5 @@
+// Copyright (c) MisCar 1574
+
 #pragma once
 
 namespace miscar {
