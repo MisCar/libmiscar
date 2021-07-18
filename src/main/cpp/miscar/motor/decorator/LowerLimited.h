@@ -20,7 +20,9 @@ class LowerLimited : public T {
       log::Warning(
           "A limited motor shouldn't be set with modes other than position");
     } else {
-      if (output < m_limit) output = m_limit;
+      if (output < m_limit) {
+        output = m_limit;
+      }
     }
 
     T::SetOutput(output, mode);

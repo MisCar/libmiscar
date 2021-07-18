@@ -15,12 +15,13 @@ template <typename T,
 /** Only set the output if it isn't the same as before */
 class Lazy : public SetpointRemembering<T> {
  public:
-  Lazy(const T &t) : T(t) {}
+  explicit Lazy(const T &t) : T(t) {}
 
   void SetOutput(double output, Motor::Mode mode) override {
     if (output != SetpointRemembering<T>::GetOutput() ||
-        mode != SetpointRemembering<T>::GetMode())
+        mode != SetpointRemembering<T>::GetMode()) {
       T::SetOutput(output, mode);
+    }
   }
 };
 

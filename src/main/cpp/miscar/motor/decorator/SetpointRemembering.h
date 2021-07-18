@@ -14,7 +14,7 @@ template <typename T,
           typename = std::enable_if<std::is_base_of<T, Motor>::value>>
 class SetpointRemembering : public T {
  public:
-  SetpointRemembering(const T &t) : T(t) {}
+  explicit SetpointRemembering(const T &t) : T(t) {}
 
   void SetOutput(double output, Motor::Mode mode) override {
     m_output = output;
