@@ -8,7 +8,7 @@
 namespace miscar {
 
 class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
-  Talon(int id);
+  explicit Talon(int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

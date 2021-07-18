@@ -9,7 +9,7 @@ namespace miscar {
 
 class Victor : public Motor,
                public ctre::phoenix::motorcontrol::can::VictorSPX {
-  Victor(int id);
+  explicit Victor(int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;
