@@ -1,3 +1,5 @@
+#pragma once
+
 #include <rev/CANSparkMax.h>
 
 #include "miscar/motor/Motor.h"

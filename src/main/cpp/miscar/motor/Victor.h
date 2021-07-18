@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/can/VictorSPX.h>
 
