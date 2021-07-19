@@ -5,56 +5,62 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 
+#include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
 using namespace miscar;
 using namespace units;
 
-Victor::Victor(int id) : BaseMotorController(id, "Victor SRX"), VictorSPX(id) {}
+Victor::Victor(const std::string& name, int id)
+    : BaseMotorController(id, "Victor SRX"), VictorSPX(id), Motor(name, id) {
+  const int current_firmware = GetFirmwareVersion();
+  if (current_firmware != firmware::VICTOR) {
+    log::Warning(GetName() + " has outdated firmware: " +
+                 std::to_string(current_firmware) + " when " +
+                 std::to_string(firmware::VICTOR) + " is available.");
+  }
+}
 
-double Victor::GetPercentOutput() { return VictorSPX::GetMotorOutputPercent(); }
+double Victor::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double Victor::GetPosition() { return VictorSPX::GetSelectedSensorPosition(); }
+double Victor::GetPosition() { return GetSelectedSensorPosition(); }
 
-double Victor::GetVelocity() { return VictorSPX::GetSelectedSensorVelocity(); }
+double Victor::GetVelocity() { return GetSelectedSensorVelocity(); }
 
 void Victor::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
-      VictorSPX::Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput,
-                     output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      VictorSPX::Set(ctre::phoenix::motorcontrol::ControlMode::Position,
-                     output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output);
       break;
     case Velocity:
-      VictorSPX::Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
-                     output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output);
       break;
   }
 }
 
 void Victor::SetPID(PID pid) {
-  VictorSPX::Config_kP(pid.slot, pid.p);
-  VictorSPX::Config_kI(pid.slot, pid.i);
-  VictorSPX::Config_kD(pid.slot, pid.d);
-  VictorSPX::Config_kF(pid.slot, pid.f);
-  VictorSPX::Config_IntegralZone(pid.slot, pid.integral_zone);
+  Config_kP(pid.slot, pid.p);
+  Config_kI(pid.slot, pid.i);
+  Config_kD(pid.slot, pid.d);
+  Config_kF(pid.slot, pid.f);
+  Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
 void Victor::SetCurrentLimit(ampere_t limit) {
-  log::Error("Victor SPX cannot have a current limit!");
+  log::Error("Victor SPX controllers do not support a current limit!");
 }
 
 void Victor::SetPosition(double position) {
-  VictorSPX::SetSelectedSensorPosition(position);
+  SetSelectedSensorPosition(position);
 }
 
 void Victor::Brake() {
-  VictorSPX::SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
 void Victor::Coast() {
-  VictorSPX::SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
+  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }

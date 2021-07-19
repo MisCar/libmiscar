@@ -4,30 +4,39 @@
 
 #include <rev/CANSparkMax.h>
 
+#include "miscar/Firmware.h"
+#include "miscar/Log.h"
+
 using namespace miscar;
 using namespace units;
 
-Spark::Spark(int id)
-    : rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless) {}
+Spark::Spark(const std::string& name, int id)
+    : rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless),
+      Motor(name, id) {
+  const int current_firmware = GetFirmwareVersion();
+  if (current_firmware != firmware::SPARK) {
+    log::Warning(GetName() +
+                 " has outdated firmware: " + std::to_string(current_firmware) +
+                 " when " + std::to_string(firmware::SPARK) + " is available.");
+  }
+}
 
-double Spark::GetPercentOutput() { return CANSparkMax::GetAppliedOutput(); }
+double Spark::GetPercentOutput() { return GetAppliedOutput(); }
 
-double Spark::GetPosition() { return CANSparkMax::GetEncoder().GetPosition(); }
+double Spark::GetPosition() { return GetEncoder().GetPosition(); }
 
-double Spark::GetVelocity() { return CANSparkMax::GetEncoder().GetVelocity(); }
+double Spark::GetVelocity() { return GetEncoder().GetVelocity(); }
 
 void Spark::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
-      CANSparkMax::Set(output);
+      Set(output);
       break;
     case Position:
-      CANSparkMax::GetPIDController().SetReference(output,
-                                                   rev::ControlType::kPosition);
+      GetPIDController().SetReference(output, rev::ControlType::kPosition);
       break;
     case Velocity:
-      CANSparkMax::GetPIDController().SetReference(output,
-                                                   rev::ControlType::kVelocity);
+      GetPIDController().SetReference(output, rev::ControlType::kVelocity);
       break;
   }
 }

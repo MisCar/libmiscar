@@ -5,57 +5,67 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 
+#include "miscar/Firmware.h"
+#include "miscar/Log.h"
+
 using namespace miscar;
 using namespace units;
 
-Falcon::Falcon(int id)
+Falcon::Falcon(const std::string& name, int id)
     : BaseMotorController(id, "Talon FX"),
       BaseTalon(id, "Talon FX"),
-      TalonFX(id) {}
+      TalonFX(id),
+      Motor(name, id) {
+  const int current_firmware = GetFirmwareVersion();
+  if (current_firmware != firmware::FALCON) {
+    log::Warning(GetName() + " has outdated firmware: " +
+                 std::to_string(current_firmware) + " when " +
+                 std::to_string(firmware::FALCON) + " is available.");
+  }
+}
 
-double Falcon::GetPercentOutput() { return TalonFX::GetMotorOutputPercent(); }
+double Falcon::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double Falcon::GetPosition() { return TalonFX::GetSelectedSensorPosition(); }
+double Falcon::GetPosition() { return GetSelectedSensorPosition(); }
 
-double Falcon::GetVelocity() { return TalonFX::GetSelectedSensorVelocity(); }
+double Falcon::GetVelocity() { return GetSelectedSensorVelocity(); }
 
 void Falcon::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
-      TalonFX::Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput,
-                   output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      TalonFX::Set(ctre::phoenix::motorcontrol::ControlMode::Position, output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output);
       break;
     case Velocity:
-      TalonFX::Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output);
       break;
   }
 }
 
 void Falcon::SetPID(PID pid) {
-  TalonFX::Config_kP(pid.slot, pid.p);
-  TalonFX::Config_kI(pid.slot, pid.i);
-  TalonFX::Config_kD(pid.slot, pid.d);
-  TalonFX::Config_kF(pid.slot, pid.f);
-  TalonFX::Config_IntegralZone(pid.slot, pid.integral_zone);
+  Config_kP(pid.slot, pid.p);
+  Config_kI(pid.slot, pid.i);
+  Config_kD(pid.slot, pid.d);
+  Config_kF(pid.slot, pid.f);
+  Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
 void Falcon::SetCurrentLimit(ampere_t limit) {
-  TalonFX::ConfigSupplyCurrentLimit(
+  ConfigSupplyCurrentLimit(
       ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(
           true, limit.value(), 0, 0));
 }
 
 void Falcon::SetPosition(double position) {
-  TalonFX::SetSelectedSensorPosition(position);
+  SetSelectedSensorPosition(position);
 }
 
 void Falcon::Brake() {
-  TalonFX::SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
 void Falcon::Coast() {
-  TalonFX::SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
+  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
