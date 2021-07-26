@@ -4,6 +4,8 @@
 
 #include <rev/CANSparkMax.h>
 
+#include <string>
+
 #include "miscar/motor/Motor.h"
 
 namespace miscar {

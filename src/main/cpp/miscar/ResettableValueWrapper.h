@@ -8,7 +8,7 @@ namespace miscar {
 template <typename T>
 class ResettableValueWrapper : public ValueWrapper<T> {
  public:
-  ResettableValueWrapper(T value);
+  explicit ResettableValueWrapper(T value);
   void Reset();
 
  private:

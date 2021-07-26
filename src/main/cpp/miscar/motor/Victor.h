@@ -5,6 +5,8 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/can/VictorSPX.h>
 
+#include <string>
+
 #include "miscar/motor/Motor.h"
 
 namespace miscar {

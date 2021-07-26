@@ -6,7 +6,7 @@ namespace miscar {
 template <typename T>
 class ValueWrapper {
  public:
-  ValueWrapper(T value);
+  explicit ValueWrapper(T value);
   virtual T Get() const;
   virtual void Set(T value);
 

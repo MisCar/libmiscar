@@ -8,3 +8,8 @@ cppHeaderFileInclude {
 cppSrcFileInclude {
   \.cpp$
 }
+
+generatedFileExclude {
+  external/
+  gradle-wrapper.jar
+}
