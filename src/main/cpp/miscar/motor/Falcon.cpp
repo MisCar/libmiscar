@@ -9,13 +9,14 @@
 #include "miscar/Log.h"
 
 using namespace miscar;
-using namespace units;
+
+constexpr int FALCON_ENCODER_RESOLUTION = 4096;
 
 Falcon::Falcon(const std::string& name, int id)
     : BaseMotorController(id, "Talon FX"),
       BaseTalon(id, "Talon FX"),
       TalonFX(id),
-      Motor(name, id) {
+      Motor(name, id, FALCON_ENCODER_RESOLUTION) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::FALCON) {
     log::Warning(GetName() + " has outdated firmware: " +
@@ -52,7 +53,7 @@ void Falcon::SetPID(PID pid) {
   Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
-void Falcon::SetCurrentLimit(ampere_t limit) {
+void Falcon::SetCurrentLimit(units::ampere_t limit) {
   ConfigSupplyCurrentLimit(
       ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(
           true, limit.value(), 0, 0));

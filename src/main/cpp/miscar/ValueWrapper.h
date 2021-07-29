@@ -21,6 +21,7 @@ template <typename T>
 T miscar::ValueWrapper<T>::Get() const {
   return m_value;
 }
+
 template <typename T>
 void miscar::ValueWrapper<T>::Set(T value) {
   m_value = value;

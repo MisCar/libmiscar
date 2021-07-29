@@ -12,7 +12,7 @@
 namespace miscar {
 
 class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
-  Talon(const std::string& name, int id);
+  Talon(const std::string& name, int id, int encoder_resolution);
 
   double GetPercentOutput() override;
   double GetPosition() override;

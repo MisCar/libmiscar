@@ -12,7 +12,7 @@ namespace miscar {
 
 class Motor {
  public:
-  Motor(const std::string& name, int id);
+  Motor(const std::string& name, int id, int encoder_resolution);
 
   enum Mode { PercentOutput, Position, Velocity };
 
@@ -32,6 +32,7 @@ class Motor {
  private:
   const std::string m_name;
   const int m_id;
+  const int m_encoder_resolution;
 };
 
 }  // namespace miscar

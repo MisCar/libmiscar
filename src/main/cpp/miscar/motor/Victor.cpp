@@ -11,8 +11,10 @@
 using namespace miscar;
 using namespace units;
 
-Victor::Victor(const std::string& name, int id)
-    : BaseMotorController(id, "Victor SRX"), VictorSPX(id), Motor(name, id) {
+Victor::Victor(const std::string& name, int id, int encoder_resolution)
+    : BaseMotorController(id, "Victor SRX"),
+      VictorSPX(id),
+      Motor(name, id, encoder_resolution) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::VICTOR) {
     log::Warning(GetName() + " has outdated firmware: " +

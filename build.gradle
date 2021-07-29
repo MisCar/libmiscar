@@ -83,3 +83,47 @@ spotless {
         clangFormat(clangFormatVersion)
     }
 }
+
+task buildAthena {
+	dependsOn "frcUserProgramLinuxathenaReleaseExecutable"
+}
+
+task test {
+	dependsOn "runFrcUserProgramTest" + wpi.platforms.desktop.capitalize() + "ReleaseGoogleTestExe"
+}
+
+task intellisense {
+    dependsOn "generateCompileCommands"
+
+    doLast {
+        def commands = new groovy.json.JsonSlurper().parseText(file("build/compile_commands/" + wpi.platforms.desktop + "/compile_commands.json").text)
+
+        def firstCommand = commands[0].command
+        firstCommand = firstCommand.substring(firstCommand.indexOf(" "))
+        firstCommand = firstCommand.substring(0, firstCommand.lastIndexOf(" "))
+        firstCommand += "-c"
+
+        commands.each {
+            it.command += " -c"
+        }
+
+        new File("build/compile_commands/compile_commands.json").text = groovy.json.JsonOutput.toJson(commands)
+        new File("build/compile_commands/compile_flags.txt").text = firstCommand
+
+        def includeAll = ""
+
+        for (String header : edu.wpi.first.vscode.tooling.ToolChainGenerator.generateToolChains(getProject())[0].getBinaries()[0].getLibHeaders()) {
+            if (!header.contains("src") && !header.contains("visa") && !header.contains("chipobject") && !header.contains("netcomm")) {
+                new File(header).eachFileRecurse (groovy.io.FileType.FILES) { file ->
+                    def include = file.toString().substring(header.length())
+
+                    if (!include.contains("LICENSE") && !include.contains("Eigen")) {
+                        includeAll += "#include <" + include + ">\n"
+                    }
+                }
+            }
+        }
+
+        new File("IncludeAll.h").text = includeAll
+    }
+}
