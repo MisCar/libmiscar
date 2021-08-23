@@ -14,8 +14,8 @@ using namespace units;
 Talon::Talon(const std::string& name, int id, int encoder_resolution)
     : BaseMotorController(id, "Talon SRX"),
       BaseTalon(id, "Talon SRX"),
-      TalonSRX(id),
-      Motor(name, id, encoder_resolution) {
+      Motor(name, id, encoder_resolution),
+      TalonSRX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::TALON) {
     log::Warning(GetName() +

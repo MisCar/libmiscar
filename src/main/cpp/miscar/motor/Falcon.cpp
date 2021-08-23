@@ -15,8 +15,8 @@ constexpr int FALCON_ENCODER_RESOLUTION = 4096;
 Falcon::Falcon(const std::string& name, int id)
     : BaseMotorController(id, "Talon FX"),
       BaseTalon(id, "Talon FX"),
-      TalonFX(id),
-      Motor(name, id, FALCON_ENCODER_RESOLUTION) {
+      Motor(name, id, FALCON_ENCODER_RESOLUTION),
+      TalonFX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::FALCON) {
     log::Warning(GetName() + " has outdated firmware: " +

@@ -13,8 +13,8 @@ using namespace units;
 constexpr int NEO_ENCODER_RESOLUTION = 4096;
 
 Spark::Spark(const std::string& name, int id)
-    : rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless),
-      Motor(name, id, NEO_ENCODER_RESOLUTION) {
+    : Motor(name, id, NEO_ENCODER_RESOLUTION),
+      rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::SPARK) {
     log::Warning(GetName() +

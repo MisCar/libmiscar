@@ -13,8 +13,8 @@ using namespace units;
 
 Victor::Victor(const std::string& name, int id, int encoder_resolution)
     : BaseMotorController(id, "Victor SRX"),
-      VictorSPX(id),
-      Motor(name, id, encoder_resolution) {
+      Motor(name, id, encoder_resolution),
+      VictorSPX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::VICTOR) {
     log::Warning(GetName() + " has outdated firmware: " +
