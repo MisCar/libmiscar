@@ -31,7 +31,7 @@ sim {
 
 model {
     components {
-        frcUserProgram(NativeExecutableSpec) {
+        program(NativeExecutableSpec) {
             targetPlatform wpi.platforms.roborio
             targetPlatform wpi.platforms.desktop
 
@@ -50,8 +50,8 @@ model {
         }
     }
     testSuites {
-        frcUserProgramTest(GoogleTestTestSuiteSpec) {
-            testing $.components.frcUserProgram
+        test(GoogleTestTestSuiteSpec) {
+            testing $.components.program
 
             sources.cpp {
                 source {
@@ -84,12 +84,23 @@ spotless {
     }
 }
 
+/* Warning Cleanup */
+
+// CTRE Phoenix
+if (wpi.platforms.desktop.equals("windowsx86-64")) {
+    nativeUtils.platformConfigs.named("windowsx86-64") {
+        it.linker.args << "/IGNORE:4250"
+    }
+}
+
+/* Utility Tasks */
+
 task buildAthena {
-	dependsOn "frcUserProgramLinuxathenaReleaseExecutable"
+	dependsOn "programLinuxathenaReleaseExecutable"
 }
 
 task test {
-	dependsOn "runFrcUserProgramTest" + wpi.platforms.desktop.capitalize() + "ReleaseGoogleTestExe"
+	dependsOn "runTest" + wpi.platforms.desktop.capitalize() + "ReleaseGoogleTestExe"
 }
 
 task intellisense {
@@ -99,31 +110,37 @@ task intellisense {
         def commands = new groovy.json.JsonSlurper().parseText(file("build/compile_commands/" + wpi.platforms.desktop + "/compile_commands.json").text)
 
         def firstCommand = commands[0].command
-        firstCommand = firstCommand.substring(firstCommand.indexOf(" "))
+        firstCommand = firstCommand.substring(firstCommand.indexOf('" ') + 2)
         firstCommand = firstCommand.substring(0, firstCommand.lastIndexOf(" "))
-        firstCommand += "-c"
+        firstCommand += " -c"
 
         commands.each {
-            it.command += " -c"
+            it.command = it.command.replace("\\", "/")
+            it.command += " -std=c++17 -c"
         }
 
-        new File("build/compile_commands/compile_commands.json").text = groovy.json.JsonOutput.toJson(commands)
-        new File("build/compile_commands/compile_flags.txt").text = firstCommand
+        file("build/compile_commands/compile_commands.json").text = groovy.json.JsonOutput.toJson(commands)
+        file("build/compile_commands/compile_flags.txt").text = firstCommand
 
         def includeAll = ""
 
         for (String header : edu.wpi.first.vscode.tooling.ToolChainGenerator.generateToolChains(getProject())[0].getBinaries()[0].getLibHeaders()) {
             if (!header.contains("src") && !header.contains("visa") && !header.contains("chipobject") && !header.contains("netcomm")) {
-                new File(header).eachFileRecurse (groovy.io.FileType.FILES) { file ->
+                file(header).eachFileRecurse (groovy.io.FileType.FILES) { file ->
                     def include = file.toString().substring(header.length())
 
                     if (!include.contains("LICENSE") && !include.contains("Eigen")) {
-                        includeAll += "#include <" + include + ">\n"
+                        includeAll += "#include <" + include.replace("\\", "/") + ">\n"
                     }
                 }
             }
         }
 
-        new File("IncludeAll.h").text = includeAll
+        file("IncludeAll.h").text = includeAll
+
+        if (file("compile_commands.json").exists()) {
+            delete "compile_commands.json"
+        }
+        java.nio.file.Files.createLink(java.nio.file.Paths.get(projectDir.path, "compile_commands.json"), java.nio.file.Paths.get(projectDir.path, "build/compile_commands/compile_commands.json"))
     }
 }
