@@ -1,10 +1,9 @@
 name: Lint and Format
-
 on: [push, pull_request]
 
 jobs:
     wpiformat:
-        name: "wpiformat"
+        name: "WPI Format"
         runs-on: ubuntu-latest
         container: wpilib/roborio-cross-ubuntu:2021-20.04
         steps:
@@ -38,7 +37,7 @@ jobs:
                   path: wpiformat-fixes.patch
               if: ${{ failure() }}
     tidy:
-        name: "clang-tidy"
+        name: "Clang Tidy"
         runs-on: ubuntu-latest
         container: wpilib/roborio-cross-ubuntu:2021-20.04
         steps:
@@ -57,22 +56,28 @@ jobs:
                   sudo sh -c "echo 'deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -cs)-proposed restricted main multiverse universe' >> /etc/apt/sources.list.d/proposed-repositories.list"
                   sudo apt-get update -q
                   sudo apt-get install -y clang-tidy-12 clang-format-12
+                  sudo ln -sf /usr/bin/clang-format-12 /usr/bin/clang-format
             - name: Install wpiformat
               run: pip3 install wpiformat
             - name: Create compile_commands.json
-              run: mkdir build-cmake && cd build-cmake && cmake -DWITH_OLD_COMMANDS=ON -DWITH_EXAMPLES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=YES ..
+              run: ./gradlew intellisense
             - name: List changed files
               run: wpiformat -list-changed-files
             - name: Run clang-tidy
-              run: wpiformat -clang 12 -no-format -tidy-changed -compile-commands=build-cmake
+              run: wpiformat -clang 12 -no-format -tidy-changed
     spotless:
         name: "Spotless"
         runs-on: ubuntu-latest
-        container: wpilib/ubuntu-base:18.04
         steps:
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 0
+            - name: Set up clang format
+              run: |
+                  sudo apt-get install clang-format-12
+                  sudo ln -sf /usr/bin/clang-format-12 /usr/bin/clang-format
+            - name: Install roboRIO Toolchain
+              run: ./gradlew installRoboRioToolchain
             - name: Run spotless
               run: ./gradlew spotlessCheck
             - name: Apply Spotless
