@@ -1,8 +1,8 @@
-name: Check
+name: Build
 on: [push, pull_request]
 
 jobs:
-    all:
+    build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
