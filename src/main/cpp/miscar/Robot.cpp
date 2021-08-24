@@ -6,8 +6,8 @@
 #include <frc/shuffleboard/Shuffleboard.h>
 
 #include "miscar/Log.h"
-#include "miscar/motor/Motor.h"
 #include "miscar/Network.h"
+#include "miscar/motor/Motor.h"
 
 using namespace miscar;
 
@@ -70,9 +70,9 @@ void Robot::TeleopPeriodic() {}
 
 void Robot::TestPeriodic() {
 #ifdef RUNNING_SYSTEM_CHECKS
-  if (network::GetBool("Tuning/Activate")) {
+  if (network::Get<bool>("Tuning/Activate")) {
     m_motor_chooser.GetSelected()->SetOutput(
-        network::GetDouble("Tuning/Output"), m_mode_chooser.GetSelected());
+        network::Get<double>("Tuning/Output"), m_mode_chooser.GetSelected());
   }
 #endif
 }

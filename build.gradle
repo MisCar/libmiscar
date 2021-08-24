@@ -89,7 +89,14 @@ spotless {
 // CTRE Phoenix
 if (wpi.platforms.desktop.equals("windowsx86-64")) {
     nativeUtils.platformConfigs.named("windowsx86-64") {
-        it.linker.args << "/IGNORE:4250"
+        it.cppCompiler.args << "/wd4250"
+    }
+}
+
+// REV Robotics
+nativeUtils.platformConfigs.all {
+    if (it.platformPath != "windows/x86-64") {
+        it.cppCompiler.args << "-Wno-attributes"
     }
 }
 

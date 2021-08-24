@@ -1,23 +1,30 @@
+// Copyright (c) MisCar 1574
+
 #include "Network.h"
-#include "networktables/NetworkTableInstance.h"
+
+#include <networktables/NetworkTableInstance.h>
+
+#include <string>
 
 using namespace miscar;
 
-bool network::GetBool(const std::string &path, bool defaultValue) {
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry("MisCar/" + path)
-      .GetBoolean(defaultValue);
+template <>
+bool network::Get<bool>(const std::string &path) {
+  return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetBoolean(
+      false);
 }
 
-double network::GetDouble(const std::string &path, double defaultValue) {
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry("MisCar/" + path)
-      .GetDouble(defaultValue);
+template <>
+int network::Get<int>(const std::string &path) {
+  return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetDouble(0);
 }
 
-std::string network::GetString(const std::string &path,
-                               const std::string &defaultValue) {
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry("MisCar/" + path)
-      .GetString(defaultValue);
+template <>
+double network::Get<double>(const std::string &path) {
+  return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetDouble(0);
+}
+
+template <>
+std::string network::Get<std::string>(const std::string &path) {
+  return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetString("");
 }

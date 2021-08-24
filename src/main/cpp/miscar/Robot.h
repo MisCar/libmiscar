@@ -1,4 +1,3 @@
-
 // Copyright (c) MisCar 1574
 
 #pragma once
@@ -7,6 +6,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/Command.h>
+
 #include "miscar/motor/Motor.h"
 
 class Robot : public frc::TimedRobot {

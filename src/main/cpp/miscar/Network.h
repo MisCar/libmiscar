@@ -1,12 +1,12 @@
+// Copyright (c) MisCar 1574
+
 #pragma once
 
 #include <string>
 
 namespace miscar::network {
 
-bool GetBool(const std::string& path, bool defaultValue = false);
-double GetDouble(const std::string& path, double defaultValue = 0);
-std::string GetString(const std::string& path,
-                      const std::string& defaultValue = "");
+template <typename T>
+T Get(const std::string& path);
 
 }  // namespace miscar::network
