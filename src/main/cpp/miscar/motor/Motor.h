@@ -4,7 +4,9 @@
 
 #include <units/current.h>
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "miscar/PID.h"
 
@@ -12,7 +14,7 @@ namespace miscar {
 
 class Motor {
  public:
-  Motor(const std::string& name, int id, int encoder_resolution);
+  Motor(std::string&& name, int id, int encoder_resolution);
 
   enum Mode { PercentOutput, Position, Velocity };
 
@@ -29,10 +31,18 @@ class Motor {
   virtual void Brake() = 0;
   virtual void Coast() = 0;
 
+#ifdef RUNNING_SYSTEM_CHECKS
+  static std::vector<Motor*>& GetInstances() { return m_instances; }
+#endif
+
  private:
   const std::string m_name;
   const int m_id;
   const int m_encoder_resolution;
+
+#ifdef RUNNING_SYSTEM_CHECKS
+  static std::vector<Motor*> m_instances;
+#endif
 };
 
 }  // namespace miscar

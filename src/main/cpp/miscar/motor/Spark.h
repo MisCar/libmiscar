@@ -13,7 +13,7 @@ namespace miscar {
 /** Used for NEO motors. We only use Sparks for brushless motors */
 class Spark : public Motor, public rev::CANSparkMax {
  public:
-  Spark(const std::string& name, int id);
+  Spark(std::string&& name, int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

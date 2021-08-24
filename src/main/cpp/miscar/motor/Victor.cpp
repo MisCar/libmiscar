@@ -8,13 +8,10 @@
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
-using namespace miscar;
-using namespace units;
-
-Victor::Victor(const std::string& name, int id, int encoder_resolution)
+miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
     : BaseMotorController(id, "Victor SRX"),
-      VictorSPX(id),
-      Motor(name, id, encoder_resolution) {
+      Motor(std::move(name), id, encoder_resolution),
+      VictorSPX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::VICTOR) {
     log::Warning(GetName() + " has outdated firmware: " +
@@ -23,13 +20,13 @@ Victor::Victor(const std::string& name, int id, int encoder_resolution)
   }
 }
 
-double Victor::GetPercentOutput() { return GetMotorOutputPercent(); }
+double miscar::Victor::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double Victor::GetPosition() { return GetSelectedSensorPosition(); }
+double miscar::Victor::GetPosition() { return GetSelectedSensorPosition(); }
 
-double Victor::GetVelocity() { return GetSelectedSensorVelocity(); }
+double miscar::Victor::GetVelocity() { return GetSelectedSensorVelocity(); }
 
-void Victor::SetOutput(double output, Mode mode) {
+void miscar::Victor::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
@@ -43,7 +40,7 @@ void Victor::SetOutput(double output, Mode mode) {
   }
 }
 
-void Victor::SetPID(PID pid) {
+void miscar::Victor::SetPID(PID pid) {
   Config_kP(pid.slot, pid.p);
   Config_kI(pid.slot, pid.i);
   Config_kD(pid.slot, pid.d);
@@ -51,18 +48,18 @@ void Victor::SetPID(PID pid) {
   Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
-void Victor::SetCurrentLimit(ampere_t limit) {
+void miscar::Victor::SetCurrentLimit(units::ampere_t limit) {
   log::Error("Victor SPX controllers do not support a current limit!");
 }
 
-void Victor::SetPosition(double position) {
+void miscar::Victor::SetPosition(double position) {
   SetSelectedSensorPosition(position);
 }
 
-void Victor::Brake() {
+void miscar::Victor::Brake() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
-void Victor::Coast() {
+void miscar::Victor::Coast() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }

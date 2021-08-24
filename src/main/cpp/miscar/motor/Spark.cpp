@@ -7,14 +7,11 @@
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
-using namespace miscar;
-using namespace units;
-
 constexpr int NEO_ENCODER_RESOLUTION = 4096;
 
-Spark::Spark(const std::string& name, int id)
-    : rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless),
-      Motor(name, id, NEO_ENCODER_RESOLUTION) {
+miscar::Spark::Spark(std::string&& name, int id)
+    : Motor(std::move(name), id, NEO_ENCODER_RESOLUTION),
+      rev::CANSparkMax(id, rev::CANSparkMax::MotorType::kBrushless) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::SPARK) {
     log::Warning(GetName() +
@@ -23,13 +20,13 @@ Spark::Spark(const std::string& name, int id)
   }
 }
 
-double Spark::GetPercentOutput() { return GetAppliedOutput(); }
+double miscar::Spark::GetPercentOutput() { return GetAppliedOutput(); }
 
-double Spark::GetPosition() { return GetEncoder().GetPosition(); }
+double miscar::Spark::GetPosition() { return GetEncoder().GetPosition(); }
 
-double Spark::GetVelocity() { return GetEncoder().GetVelocity(); }
+double miscar::Spark::GetVelocity() { return GetEncoder().GetVelocity(); }
 
-void Spark::SetOutput(double output, Mode mode) {
+void miscar::Spark::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
       Set(output);
@@ -43,7 +40,7 @@ void Spark::SetOutput(double output, Mode mode) {
   }
 }
 
-void Spark::SetPID(PID pid) {
+void miscar::Spark::SetPID(PID pid) {
   auto controller = CANSparkMax::GetPIDController();
 
   controller.SetP(pid.p);
@@ -53,18 +50,18 @@ void Spark::SetPID(PID pid) {
   controller.SetIZone(pid.integral_zone);
 }
 
-void Spark::SetCurrentLimit(ampere_t limit) {
+void miscar::Spark::SetCurrentLimit(units::ampere_t limit) {
   CANSparkMax::SetSmartCurrentLimit(limit.value());
 }
 
-void Spark::SetPosition(double position) {
+void miscar::Spark::SetPosition(double position) {
   CANSparkMax::GetEncoder().SetPosition(position);
 }
 
-void Spark::Brake() {
+void miscar::Spark::Brake() {
   CANSparkMax::SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
 
-void Spark::Coast() {
+void miscar::Spark::Coast() {
   CANSparkMax::SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 }

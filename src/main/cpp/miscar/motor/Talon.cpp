@@ -8,14 +8,11 @@
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
-using namespace miscar;
-using namespace units;
-
-Talon::Talon(const std::string& name, int id, int encoder_resolution)
+miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
     : BaseMotorController(id, "Talon SRX"),
       BaseTalon(id, "Talon SRX"),
-      TalonSRX(id),
-      Motor(name, id, encoder_resolution) {
+      Motor(std::move(name), id, encoder_resolution),
+      TalonSRX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::TALON) {
     log::Warning(GetName() +
@@ -24,13 +21,13 @@ Talon::Talon(const std::string& name, int id, int encoder_resolution)
   }
 }
 
-double Talon::GetPercentOutput() { return GetMotorOutputPercent(); }
+double miscar::Talon::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double Talon::GetPosition() { return GetSelectedSensorPosition(); }
+double miscar::Talon::GetPosition() { return GetSelectedSensorPosition(); }
 
-double Talon::GetVelocity() { return GetSelectedSensorVelocity(); }
+double miscar::Talon::GetVelocity() { return GetSelectedSensorVelocity(); }
 
-void Talon::SetOutput(double output, Mode mode) {
+void miscar::Talon::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
@@ -44,7 +41,7 @@ void Talon::SetOutput(double output, Mode mode) {
   }
 }
 
-void Talon::SetPID(PID pid) {
+void miscar::Talon::SetPID(PID pid) {
   Config_kP(pid.slot, pid.p);
   Config_kI(pid.slot, pid.i);
   Config_kD(pid.slot, pid.d);
@@ -52,20 +49,20 @@ void Talon::SetPID(PID pid) {
   Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
-void Talon::SetCurrentLimit(ampere_t limit) {
+void miscar::Talon::SetCurrentLimit(units::ampere_t limit) {
   ConfigSupplyCurrentLimit(
       ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(
           true, limit.value(), 0, 0));
 }
 
-void Talon::SetPosition(double position) {
+void miscar::Talon::SetPosition(double position) {
   SetSelectedSensorPosition(position);
 }
 
-void Talon::Brake() {
+void miscar::Talon::Brake() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
-void Talon::Coast() {
+void miscar::Talon::Coast() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }

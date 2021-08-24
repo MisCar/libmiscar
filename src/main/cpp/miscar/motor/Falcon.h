@@ -13,7 +13,7 @@ namespace miscar {
 /** AKA Talon FX */
 class Falcon : public Motor, public ctre::phoenix::motorcontrol::can::TalonFX {
  public:
-  Falcon(const std::string& name, int id);
+  Falcon(std::string&& name, int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;
