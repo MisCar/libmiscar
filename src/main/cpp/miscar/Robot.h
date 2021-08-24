@@ -9,6 +9,8 @@
 
 #include "miscar/motor/Motor.h"
 
+namespace miscar {
+
 class Robot : public frc::TimedRobot {
  public:
   Robot();
@@ -34,3 +36,5 @@ class Robot : public frc::TimedRobot {
 
 #endif
 };
+
+}  // namespace miscar

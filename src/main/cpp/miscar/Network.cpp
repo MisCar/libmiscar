@@ -6,25 +6,23 @@
 
 #include <string>
 
-using namespace miscar;
-
 template <>
-bool network::Get<bool>(const std::string &path) {
+bool miscar::network::Get<bool>(const std::string &path) {
   return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetBoolean(
       false);
 }
 
 template <>
-int network::Get<int>(const std::string &path) {
+int miscar::network::Get<int>(const std::string &path) {
   return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetDouble(0);
 }
 
 template <>
-double network::Get<double>(const std::string &path) {
+double miscar::network::Get<double>(const std::string &path) {
   return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetDouble(0);
 }
 
 template <>
-std::string network::Get<std::string>(const std::string &path) {
+std::string miscar::network::Get<std::string>(const std::string &path) {
   return nt::NetworkTableInstance::GetDefault().GetEntry(path).GetString("");
 }

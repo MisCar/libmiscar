@@ -8,14 +8,12 @@
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
-using namespace miscar;
-
 constexpr int FALCON_ENCODER_RESOLUTION = 4096;
 
-Falcon::Falcon(const std::string& name, int id)
+miscar::Falcon::Falcon(std::string&& name, int id)
     : BaseMotorController(id, "Talon FX"),
       BaseTalon(id, "Talon FX"),
-      Motor(name, id, FALCON_ENCODER_RESOLUTION),
+      Motor(std::move(name), id, FALCON_ENCODER_RESOLUTION),
       TalonFX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::FALCON) {
@@ -25,13 +23,13 @@ Falcon::Falcon(const std::string& name, int id)
   }
 }
 
-double Falcon::GetPercentOutput() { return GetMotorOutputPercent(); }
+double miscar::Falcon::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double Falcon::GetPosition() { return GetSelectedSensorPosition(); }
+double miscar::Falcon::GetPosition() { return GetSelectedSensorPosition(); }
 
-double Falcon::GetVelocity() { return GetSelectedSensorVelocity(); }
+double miscar::Falcon::GetVelocity() { return GetSelectedSensorVelocity(); }
 
-void Falcon::SetOutput(double output, Mode mode) {
+void miscar::Falcon::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
@@ -45,7 +43,7 @@ void Falcon::SetOutput(double output, Mode mode) {
   }
 }
 
-void Falcon::SetPID(PID pid) {
+void miscar::Falcon::SetPID(PID pid) {
   Config_kP(pid.slot, pid.p);
   Config_kI(pid.slot, pid.i);
   Config_kD(pid.slot, pid.d);
@@ -53,20 +51,20 @@ void Falcon::SetPID(PID pid) {
   Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
-void Falcon::SetCurrentLimit(units::ampere_t limit) {
+void miscar::Falcon::SetCurrentLimit(units::ampere_t limit) {
   ConfigSupplyCurrentLimit(
       ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(
           true, limit.value(), 0, 0));
 }
 
-void Falcon::SetPosition(double position) {
+void miscar::Falcon::SetPosition(double position) {
   SetSelectedSensorPosition(position);
 }
 
-void Falcon::Brake() {
+void miscar::Falcon::Brake() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
-void Falcon::Coast() {
+void miscar::Falcon::Coast() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }

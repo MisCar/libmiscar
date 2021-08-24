@@ -9,13 +9,11 @@
 #include "miscar/Network.h"
 #include "miscar/motor/Motor.h"
 
-using namespace miscar;
-
 const std::string GEVARIM[] = {"Zaks",  "Szpiler", "Sheffi", "Toto",
                                "Mayan", "Hadas",   "Barak"};
 constexpr auto GEVARIM_COUNT = sizeof(GEVARIM) / sizeof(GEVARIM[0]);
 
-Robot::Robot() {
+miscar::Robot::Robot() {
   int index = (static_cast<double>(std::rand()) / RAND_MAX) * GEVARIM_COUNT;
   log::Network("Gever", GEVARIM[index]);
   frc::Shuffleboard::GetTab("MisCar").Add(m_autonomous_chooser);
@@ -35,40 +33,40 @@ Robot::Robot() {
 #endif
 }
 
-Robot::~Robot() {}
+miscar::Robot::~Robot() {}
 
-void Robot::RobotInit() {}
+void miscar::Robot::RobotInit() {}
 
-void Robot::RobotPeriodic() {
+void miscar::Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   log::Network("/MisCar/CompressorEnabled", m_compressor.Enabled());
   log::Network("/MisCar/Battery",
                frc::DriverStation::GetInstance().GetBatteryVoltage());
 }
 
-void Robot::DisabledInit() {}
+void miscar::Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() {}
+void miscar::Robot::DisabledPeriodic() {}
 
-void Robot::AutonomousInit() {
+void miscar::Robot::AutonomousInit() {
   auto autonomous = m_autonomous_chooser.GetSelected();
   if (autonomous != nullptr) {
     autonomous->Schedule();
   }
 }
 
-void Robot::AutonomousPeriodic() {}
+void miscar::Robot::AutonomousPeriodic() {}
 
-void Robot::TeleopInit() {
+void miscar::Robot::TeleopInit() {
   auto autonomous = m_autonomous_chooser.GetSelected();
   if (autonomous != nullptr) {
     autonomous->Cancel();
   }
 }
 
-void Robot::TeleopPeriodic() {}
+void miscar::Robot::TeleopPeriodic() {}
 
-void Robot::TestPeriodic() {
+void miscar::Robot::TestPeriodic() {
 #ifdef RUNNING_SYSTEM_CHECKS
   if (network::Get<bool>("Tuning/Activate")) {
     m_motor_chooser.GetSelected()->SetOutput(
