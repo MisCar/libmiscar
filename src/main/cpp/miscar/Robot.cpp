@@ -51,6 +51,7 @@ void miscar::Robot::DisabledPeriodic() {}
 void miscar::Robot::AutonomousInit() {
   auto autonomous = m_autonomous_chooser.GetSelected();
   if (autonomous != nullptr) {
+    // Periodic tasks are run in this command
     autonomous->Schedule();
   }
 }
@@ -64,7 +65,9 @@ void miscar::Robot::TeleopInit() {
   }
 }
 
-void miscar::Robot::TeleopPeriodic() {}
+void miscar::Robot::TeleopPeriodic() {
+  // Periodic tasks are run through default commands
+}
 
 void miscar::Robot::TestPeriodic() {
 #ifdef RUNNING_SYSTEM_CHECKS
