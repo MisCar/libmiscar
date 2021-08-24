@@ -1,8 +1,13 @@
-name: Check
-on: [push, pull_request]
+name: Build
+on:
+    pull_request:
+    push:
+        branches:
+            - main
 
 jobs:
-    all:
+    build:
+        name: Build
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -15,9 +20,6 @@ jobs:
               run: |
                   sudo apt-get install clang-format-12
                   sudo ln -sf /usr/bin/clang-format-12 /usr/bin/clang-format
-                  sed -i 's/def clangFormatVersion = "clang-format /def clangFormatVersion = "clang-format-12 /g' build.gradle
-            - name: Make gradlew executable
-              run: chmod +x ./gradlew
             - name: Install roboRIO Toolchain
               run: ./gradlew installRoboRioToolchain
             - name: Run Tests
