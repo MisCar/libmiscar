@@ -8,6 +8,7 @@
 #include <frc2/command/Command.h>
 
 #include "miscar/motor/Motor.h"
+#include "miscar/Solenoid.h"
 
 namespace miscar {
 
@@ -29,12 +30,13 @@ class Robot : public frc::TimedRobot {
   frc::SendableChooser<frc2::Command *> m_autonomous_chooser;
   frc::Compressor m_compressor;
 
-#ifdef RUNNING_SYSTEM_CHECKS
+  // #ifdef RUNNING_SYSTEM_CHECKS
 
   frc::SendableChooser<miscar::Motor::Mode> m_mode_chooser;
   frc::SendableChooser<miscar::Motor *> m_motor_chooser;
+  frc::SendableChooser<miscar::Solenoid *> m_solenoid_chooser;
 
-#endif
+  // #endif
 };
 
 }  // namespace miscar

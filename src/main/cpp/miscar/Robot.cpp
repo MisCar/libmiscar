@@ -28,8 +28,13 @@ miscar::Robot::Robot() {
     m_motor_chooser.AddOption(motor->GetName(), motor);
   }
 
+  for (const auto& solenoid : Solenoid::GetInstances()) {
+    m_solenoid_chooser.AddOption(solenoid->GetName(), solenoid);
+  }
+
   frc::Shuffleboard::GetTab("MisCar").Add(m_mode_chooser);
   frc::Shuffleboard::GetTab("MisCar").Add(m_motor_chooser);
+  frc::Shuffleboard::GetTab("MisCar").Add(m_solenoid_chooser);
 #endif
 }
 
@@ -74,6 +79,10 @@ void miscar::Robot::TestPeriodic() {
   if (network::Get<bool>("Tuning/Activate")) {
     m_motor_chooser.GetSelected()->SetOutput(
         network::Get<double>("Tuning/Output"), m_mode_chooser.GetSelected());
+  }
+  if (network::Get<bool>("Solenoid/Activate")) {
+    m_solenoid_chooser.GetSelected()->Set(
+        network::Get<bool>("Solenoid/Output"));
   }
 #endif
 }
