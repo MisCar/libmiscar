@@ -22,6 +22,8 @@ class Convertible : public T {
   explicit Convertible(const T &t, distance_t ratio) : T(t), m_ratio(ratio) {}
 
   distance_t GetPosition() { return Motor::GetPosition() * m_ratio; }
+  velocity_t GetVelocity() { return Motor::GetVelocity() / 1_s * m_ratio; }
+  void SetPosition(distance_t position) { SetPosition(position / m_ratio); }
 
  private:
   distance_t m_ratio;

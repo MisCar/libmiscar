@@ -7,6 +7,9 @@
 
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
+#include <units/time.h>
+
+constexpr auto VICTOR_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
     : BaseMotorController(id, "Victor SRX"),
@@ -22,9 +25,14 @@ miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
 
 double miscar::Victor::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double miscar::Victor::GetPosition() { return GetSelectedSensorPosition(); }
+double miscar::Victor::GetPosition() {
+  return GetSelectedSensorPosition() / GetEncoderResolution();
+}
 
-double miscar::Victor::GetVelocity() { return GetSelectedSensorVelocity(); }
+double miscar::Victor::GetVelocity() {
+  return GetSelectedSensorVelocity() / GetEncoderResolution() /
+         VICTOR_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
+}
 
 void miscar::Victor::SetOutput(double output, Mode mode) {
   switch (mode) {

@@ -7,6 +7,9 @@
 
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
+#include <units/time.h>
+
+constexpr auto TALON_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
     : BaseMotorController(id, "Talon SRX"),
@@ -23,9 +26,14 @@ miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
 
 double miscar::Talon::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double miscar::Talon::GetPosition() { return GetSelectedSensorPosition(); }
+double miscar::Talon::GetPosition() {
+  return GetSelectedSensorPosition() / GetEncoderResolution();
+}
 
-double miscar::Talon::GetVelocity() { return GetSelectedSensorVelocity(); }
+double miscar::Talon::GetVelocity() {
+  return GetSelectedSensorVelocity() / GetEncoderResolution() /
+         TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>();
+}
 
 void miscar::Talon::SetOutput(double output, Mode mode) {
   switch (mode) {

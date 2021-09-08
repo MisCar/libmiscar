@@ -7,8 +7,10 @@
 
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
+#include <units/time.h>
 
 constexpr int FALCON_ENCODER_RESOLUTION = 4096;
+constexpr auto FALCON_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Falcon::Falcon(std::string&& name, int id)
     : BaseMotorController(id, "Talon FX"),
@@ -25,9 +27,14 @@ miscar::Falcon::Falcon(std::string&& name, int id)
 
 double miscar::Falcon::GetPercentOutput() { return GetMotorOutputPercent(); }
 
-double miscar::Falcon::GetPosition() { return GetSelectedSensorPosition(); }
+double miscar::Falcon::GetPosition() {
+  return GetSelectedSensorPosition() / FALCON_ENCODER_RESOLUTION;
+}
 
-double miscar::Falcon::GetVelocity() { return GetSelectedSensorVelocity(); }
+double miscar::Falcon::GetVelocity() {
+  return GetSelectedSensorVelocity() / FALCON_ENCODER_RESOLUTION /
+         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>();
+}
 
 void miscar::Falcon::SetOutput(double output, Mode mode) {
   switch (mode) {

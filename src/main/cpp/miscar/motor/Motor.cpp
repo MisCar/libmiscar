@@ -11,4 +11,6 @@ const std::string& miscar::Motor::GetName() { return m_name; }
 
 int miscar::Motor::GetId() { return m_id; }
 
+int miscar::Motor::GetEncoderResolution() { return m_encoder_resolution; }
+
 std::vector<miscar::Motor*> miscar::Motor::m_instances = std::vector<Motor*>();

@@ -20,6 +20,7 @@ class Motor {
 
   const std::string& GetName();
   int GetId();
+  int GetEncoderResolution();
   virtual double GetPercentOutput() = 0;
   virtual double GetPosition() = 0;
   virtual double GetVelocity() = 0;
