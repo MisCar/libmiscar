@@ -28,13 +28,8 @@ class Robot : public frc::TimedRobot {
  private:
   frc::SendableChooser<frc2::Command *> m_autonomous_chooser;
   frc::Compressor m_compressor;
-
-#ifdef RUNNING_SYSTEM_CHECKS
-
   frc::SendableChooser<miscar::Motor::Mode> m_mode_chooser;
   frc::SendableChooser<miscar::Motor *> m_motor_chooser;
-
-#endif
 };
 
 }  // namespace miscar

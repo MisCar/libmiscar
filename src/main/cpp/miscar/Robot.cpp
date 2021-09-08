@@ -18,7 +18,6 @@ miscar::Robot::Robot() {
   log::Network("Gever", GEVARIM[index]);
   frc::Shuffleboard::GetTab("MisCar").Add(m_autonomous_chooser);
 
-#ifdef RUNNING_SYSTEM_CHECKS
   m_mode_chooser.SetDefaultOption("Percent Output",
                                   miscar::Motor::PercentOutput);
   m_mode_chooser.AddOption("Position", miscar::Motor::Position);
@@ -30,7 +29,6 @@ miscar::Robot::Robot() {
 
   frc::Shuffleboard::GetTab("MisCar").Add(m_mode_chooser);
   frc::Shuffleboard::GetTab("MisCar").Add(m_motor_chooser);
-#endif
 }
 
 miscar::Robot::~Robot() {}
@@ -70,10 +68,8 @@ void miscar::Robot::TeleopPeriodic() {
 }
 
 void miscar::Robot::TestPeriodic() {
-#ifdef RUNNING_SYSTEM_CHECKS
   if (network::Get<bool>("Tuning/Activate")) {
     m_motor_chooser.GetSelected()->SetOutput(
         network::Get<double>("Tuning/Output"), m_mode_chooser.GetSelected());
   }
-#endif
 }
