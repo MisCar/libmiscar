@@ -4,10 +4,10 @@
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
+#include <units/time.h>
 
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
-#include <units/time.h>
 
 constexpr int FALCON_ENCODER_RESOLUTION = 4096;
 constexpr auto FALCON_VELOCITY_SAMPLE_RATE = 100_ms;

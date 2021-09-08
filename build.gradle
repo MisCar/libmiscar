@@ -1,22 +1,27 @@
 plugins {
-    id "cpp"
-    id "google-test-test-suite"
-    id "edu.wpi.first.GradleRIO" version "2021.3.1"
+    id "org.miscar.gradle-utilities" version "2021.1.1"
+}
 
-    id "com.diffplug.spotless" version "5.12.5"
+miscar {
+    submodules = false
 }
 
 deploy {
     targets {
-        roboRIO("roborio") {
+        roboRIO("robot") {
             team = frc.getTeamOrDefault(1574)
         }
     }
     artifacts {
-        frcNativeArtifact("frcCpp") {
-            targets << "roborio"
-            component = "frcUserProgram"
+        frcNativeArtifact("code") {
+            targets << "robot"
+            component = "program"
             debug = frc.getDebugOrDefault(false)
+        }
+        fileTreeArtifact("files") {
+            targets << "robot"
+            files = fileTree(dir: "src/main/deploy")
+            directory = "/home/lvuser/deploy"
         }
     }
 }
@@ -24,9 +29,6 @@ deploy {
 dependencies {
     simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
     simulation wpi.deps.sim.driverstation(wpi.platforms.desktop, true)
-}
-
-sim {
 }
 
 model {
@@ -64,90 +66,5 @@ model {
             wpi.deps.wpilib(it)
             wpi.deps.googleTest(it)
         }
-    }
-}
-
-def clangFormatVersion = "clang-format --version".execute().text
-clangFormatVersion = clangFormatVersion.substring(clangFormatVersion.indexOf("version") + 8).trim()
-
-spotless {
-    format "cpp", {
-        target "src/**/*.cpp"
-
-        clangFormat(clangFormatVersion)
-    }
-
-    format "h", {
-        target "src/**/*.h"
-
-        clangFormat(clangFormatVersion)
-    }
-}
-
-/* Warning Cleanup */
-
-// CTRE Phoenix
-if (wpi.platforms.desktop.equals("windowsx86-64")) {
-    nativeUtils.platformConfigs.named("windowsx86-64") {
-        it.cppCompiler.args << "/wd4250"
-    }
-}
-
-// REV Robotics
-nativeUtils.platformConfigs.all {
-    if (it.platformPath != "windows/x86-64") {
-        it.cppCompiler.args << "-Wno-attributes"
-    }
-}
-
-/* Utility Tasks */
-
-task buildAthena {
-	dependsOn "programLinuxathenaReleaseExecutable"
-}
-
-task test {
-	dependsOn "runTest" + wpi.platforms.desktop.capitalize() + "ReleaseGoogleTestExe"
-}
-
-task intellisense {
-    dependsOn "generateCompileCommands"
-
-    doLast {
-        def commands = new groovy.json.JsonSlurper().parseText(file("build/compile_commands/" + wpi.platforms.desktop + "/compile_commands.json").text)
-
-        def firstCommand = commands[0].command
-        firstCommand = firstCommand.substring(firstCommand.indexOf('" ') + 2)
-        firstCommand = firstCommand.substring(0, firstCommand.lastIndexOf(" "))
-        firstCommand += " -c"
-
-        commands.each {
-            it.command = it.command.replace("\\", "/")
-            it.command += " -std=c++17 -c"
-        }
-
-        file("build/compile_commands/compile_commands.json").text = groovy.json.JsonOutput.toJson(commands)
-        file("build/compile_commands/compile_flags.txt").text = firstCommand
-
-        def includeAll = ""
-
-        for (String header : edu.wpi.first.vscode.tooling.ToolChainGenerator.generateToolChains(getProject())[0].getBinaries()[0].getLibHeaders()) {
-            if (!header.contains("src") && !header.contains("visa") && !header.contains("chipobject") && !header.contains("netcomm")) {
-                file(header).eachFileRecurse (groovy.io.FileType.FILES) { file ->
-                    def include = file.toString().substring(header.length())
-
-                    if (!include.contains("LICENSE") && !include.contains("Eigen")) {
-                        includeAll += "#include <" + include.replace("\\", "/") + ">\n"
-                    }
-                }
-            }
-        }
-
-        file("IncludeAll.h").text = includeAll
-
-        if (file("compile_commands.json").exists()) {
-            delete "compile_commands.json"
-        }
-        java.nio.file.Files.createLink(java.nio.file.Paths.get(projectDir.path, "compile_commands.json"), java.nio.file.Paths.get(projectDir.path, "build/compile_commands/compile_commands.json"))
     }
 }
