@@ -3,42 +3,51 @@
 #include "Robot.h"
 
 #include <frc/DriverStation.h>
-#include <frc/shuffleboard/Shuffleboard.h>
 
 #include "miscar/Log.h"
 #include "miscar/Network.h"
 #include "miscar/motor/Motor.h"
 
-const std::string GEVARIM[] = {"Zaks",  "Szpiler", "Sheffi", "Toto",
-                               "Mayan", "Hadas",   "Barak"};
+constexpr std::string_view GEVARIM[] = {"Zaks",  "Szpiler", "Sheffi", "Toto",
+                                        "Mayan", "Hadas",   "Barak"};
 constexpr auto GEVARIM_COUNT = sizeof(GEVARIM) / sizeof(GEVARIM[0]);
 
 miscar::Robot::Robot() {
   int index = (static_cast<double>(std::rand()) / RAND_MAX) * GEVARIM_COUNT;
-  log::Network("Gever", GEVARIM[index]);
-  frc::Shuffleboard::GetTab("MisCar").Add(m_autonomous_chooser);
+  network::Set("Gever", std::string(GEVARIM[index]));
+}
 
+miscar::Robot::~Robot() {}
+
+void miscar::Robot::RobotInit() {
   m_mode_chooser.SetDefaultOption("Percent Output",
                                   miscar::Motor::PercentOutput);
   m_mode_chooser.AddOption("Position", miscar::Motor::Position);
   m_mode_chooser.AddOption("Velocity", miscar::Motor::Velocity);
 
+  m_graph_chooser.SetDefaultOption("Position", miscar::Motor::Position);
+  m_graph_chooser.AddOption("Velocity", miscar::Motor::Velocity);
+
   for (const auto& motor : Motor::GetInstances()) {
     m_motor_chooser.AddOption(motor->GetName(), motor);
   }
 
-  frc::Shuffleboard::GetTab("MisCar").Add(m_mode_chooser);
-  frc::Shuffleboard::GetTab("MisCar").Add(m_motor_chooser);
+  network::Add("Mode", m_mode_chooser);
+  network::Add("Motor", m_motor_chooser);
+  network::Add("Autonomous", m_autonomous_chooser);
+
+  network::Set("Test/Enabled", false);
+  network::Set("Test/Output", 0);
+  network::Set("Test/SetPID", false);
+  network::Set("Test/P", 0);
+  network::Set("Test/I", 0);
+  network::Set("Test/D", 0);
+  network::Set("Test/F", 0);
 }
-
-miscar::Robot::~Robot() {}
-
-void miscar::Robot::RobotInit() {}
 
 void miscar::Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-  log::Network("/MisCar/CompressorEnabled", m_compressor.Enabled());
-  log::Network("/MisCar/Battery",
+  network::Set("Battery",
                frc::DriverStation::GetInstance().GetBatteryVoltage());
 }
 
@@ -68,8 +77,20 @@ void miscar::Robot::TeleopPeriodic() {
 }
 
 void miscar::Robot::TestPeriodic() {
-  if (network::Get<bool>("Tuning/Activate")) {
+  if (network::Get<bool>("Test/Enabled")) {
     m_motor_chooser.GetSelected()->SetOutput(
-        network::Get<double>("Tuning/Output"), m_mode_chooser.GetSelected());
+        network::Get<double>("Test/Output"), m_mode_chooser.GetSelected());
+  }
+
+  if (network::Get<bool>("Test/SetPID")) {
+    m_motor_chooser.GetSelected()->SetPID(
+        {network::Get<double>("Test/P"), network::Get<double>("Test/I"),
+         network::Get<double>("Test/D"), network::Get<double>("Test/F")});
+  }
+
+  if (m_graph_chooser.GetSelected() == Motor::Position) {
+    network::Set("Test/Value", m_motor_chooser.GetSelected()->GetPosition());
+  } else {
+    network::Set("Test/Value", m_motor_chooser.GetSelected()->GetVelocity());
   }
 }

@@ -69,29 +69,3 @@ jobs:
               run: wpiformat -list-changed-files
             - name: Run clang-tidy
               run: wpiformat -clang 12 -no-format -tidy-changed
-    spotless:
-        name: "Spotless"
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-              with:
-                  fetch-depth: 0
-            - name: Set up clang format
-              run: |
-                  sudo apt-get install clang-format-12
-                  sudo ln -sf /usr/bin/clang-format-12 /usr/bin/clang-format
-            - name: Install roboRIO Toolchain
-              run: ./gradlew installRoboRioToolchain
-            - name: Run spotless
-              run: ./gradlew spotlessCheck
-            - name: Apply Spotless
-              run: ./gradlew :spotlessApply
-              if: ${{ failure() }}
-            - name: Generate diff
-              run: git diff HEAD > spotless-fixes.patch
-              if: ${{ failure() }}
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: spotless fixes
-                  path: spotless-fixes.patch
-              if: ${{ failure() }}

@@ -9,7 +9,7 @@ struct PID {
   double i;
   double d;
   double f;
-  double integral_zone;
+  double integral_zone = 0;
   int slot = 0;
 };
 

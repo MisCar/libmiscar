@@ -6,6 +6,8 @@
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 #include <units/time.h>
 
+#include "ctre/phoenix/motorcontrol/can/BaseMotorController.h"
+#include "ctre/phoenix/motorcontrol/can/TalonFX.h"
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 

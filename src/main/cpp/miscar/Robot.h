@@ -27,8 +27,8 @@ class Robot : public frc::TimedRobot {
 
  private:
   frc::SendableChooser<frc2::Command *> m_autonomous_chooser;
-  frc::Compressor m_compressor;
   frc::SendableChooser<miscar::Motor::Mode> m_mode_chooser;
+  frc::SendableChooser<miscar::Motor::Mode> m_graph_chooser;
   frc::SendableChooser<miscar::Motor *> m_motor_chooser;
 };
 
