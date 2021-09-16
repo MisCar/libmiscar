@@ -1,0 +1,1 @@
+build:osx --copt=-std=c++17
