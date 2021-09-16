@@ -9,9 +9,9 @@
 
 namespace miscar {
 
+/** A motor with an encoder which evaluates to a real-life measurement. */
 template <typename T, class distance,
           typename = std::enable_if<std::is_base_of<T, Motor>::value>>
-/** Only set the output if it isn't the same as before */
 class Convertible : public T {
  public:
   using distance_t = units::unit_t<distance>;

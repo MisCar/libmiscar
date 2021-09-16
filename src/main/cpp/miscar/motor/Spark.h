@@ -10,7 +10,12 @@
 
 namespace miscar {
 
-/** Used for NEO motors. We only use Sparks for brushless motors */
+/**
+ * AKA REV Robotics Spark Max.
+ * https://www.revrobotics.com/rev-11-2158/
+ * Used for NEO motors.
+ * We only use Sparks with brushless NEOs.
+ */
 class Spark : public Motor, public rev::CANSparkMax {
  public:
   Spark(std::string&& name, int id);

@@ -10,6 +10,7 @@
 
 namespace miscar {
 
+/** A motor which keeps track of its current output command. */
 template <typename T,
           typename = std::enable_if<std::is_base_of<T, Motor>::value>>
 class SetpointRemembering : public T {

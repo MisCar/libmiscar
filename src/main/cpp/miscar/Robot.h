@@ -11,6 +11,9 @@
 
 namespace miscar {
 
+/**
+ * A base robot class with built in test mode and other utilities.
+ */
 class Robot : public frc::TimedRobot {
  public:
   Robot();

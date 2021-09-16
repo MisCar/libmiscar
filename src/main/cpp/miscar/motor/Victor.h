@@ -11,6 +11,10 @@
 
 namespace miscar {
 
+/**
+ * AKA CTRE Victor SPX.
+ * http://www.ctr-electronics.com/victor-spx.html
+ */
 class Victor : public Motor,
                public ctre::phoenix::motorcontrol::can::VictorSPX {
   Victor(std::string&& name, int id, int encoder_resolution);

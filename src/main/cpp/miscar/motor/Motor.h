@@ -12,6 +12,7 @@
 
 namespace miscar {
 
+/** A common interface for all motor controllers to implement. */
 class Motor {
  public:
   Motor(std::string&& name, int id, int encoder_resolution);

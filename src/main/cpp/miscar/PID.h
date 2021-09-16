@@ -4,6 +4,7 @@
 
 namespace miscar {
 
+/** PIDF coefficients for closed-loop control. */
 struct PID {
   double p;
   double i;

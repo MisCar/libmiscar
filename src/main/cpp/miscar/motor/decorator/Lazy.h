@@ -10,9 +10,9 @@
 
 namespace miscar {
 
+/** A motor which only runs methods lazily to avoid extra CAN usage. */
 template <typename T,
           typename = std::enable_if<std::is_base_of<T, Motor>::value>>
-/** Only set the output if it isn't the same as before */
 class Lazy : public SetpointRemembering<T> {
  public:
   explicit Lazy(const T &t) : T(t) {}

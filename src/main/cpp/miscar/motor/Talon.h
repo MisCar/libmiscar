@@ -11,6 +11,10 @@
 
 namespace miscar {
 
+/**
+ * AKA CTRE Talon SRX.
+ * https://www.ctr-electronics.com/talon-srx.html
+ */
 class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
   Talon(std::string&& name, int id, int encoder_resolution);
 

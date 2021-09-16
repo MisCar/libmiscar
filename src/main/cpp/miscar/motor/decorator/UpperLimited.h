@@ -9,6 +9,7 @@
 
 namespace miscar {
 
+/** A motor which cannot go above a certain position. */
 template <typename T,
           typename = std::enable_if<std::is_base_of<T, Motor>::value>>
 class UpperLimited : public T {

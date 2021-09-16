@@ -4,6 +4,7 @@
 
 namespace xbox {
 
+/** The axis indices of an Xbox 360 controller. */
 enum Axes {
   LEFT_X,
   LEFT_Y,
@@ -13,6 +14,7 @@ enum Axes {
   RIGHT_Y,
 };
 
+/** The button indices of an Xbox 360 controller. */
 enum Buttons {
   A = 1,
   B,
