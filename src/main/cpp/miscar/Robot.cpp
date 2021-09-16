@@ -35,6 +35,7 @@ void miscar::Robot::RobotInit() {
   network::Add("Mode", m_mode_chooser);
   network::Add("Motor", m_motor_chooser);
   network::Add("Autonomous", m_autonomous_chooser);
+  network::Add("Graph", m_graph_chooser);
 
   network::Set("Test/Enabled", false);
   network::Set("Test/Output", 0);
@@ -77,20 +78,23 @@ void miscar::Robot::TeleopPeriodic() {
 }
 
 void miscar::Robot::TestPeriodic() {
-  if (network::Get<bool>("Test/Enabled")) {
-    m_motor_chooser.GetSelected()->SetOutput(
-        network::Get<double>("Test/Output"), m_mode_chooser.GetSelected());
-  }
+  auto motor = m_motor_chooser.GetSelected();
+  if (motor != nullptr) {
+    if (network::Get<bool>("Test/Enabled")) {
+      motor->SetOutput(network::Get<double>("Test/Output"),
+                       m_mode_chooser.GetSelected());
+    }
 
-  if (network::Get<bool>("Test/SetPID")) {
-    m_motor_chooser.GetSelected()->SetPID(
-        {network::Get<double>("Test/P"), network::Get<double>("Test/I"),
-         network::Get<double>("Test/D"), network::Get<double>("Test/F")});
-  }
+    if (network::Get<bool>("Test/SetPID")) {
+      motor->SetPID(
+          {network::Get<double>("Test/P"), network::Get<double>("Test/I"),
+           network::Get<double>("Test/D"), network::Get<double>("Test/F")});
+    }
 
-  if (m_graph_chooser.GetSelected() == Motor::Position) {
-    network::Set("Test/Value", m_motor_chooser.GetSelected()->GetPosition());
-  } else {
-    network::Set("Test/Value", m_motor_chooser.GetSelected()->GetVelocity());
+    if (m_graph_chooser.GetSelected() == Motor::Position) {
+      network::Set("Test/Value", motor->GetPosition());
+    } else {
+      network::Set("Test/Value", motor->GetVelocity());
+    }
   }
 }
