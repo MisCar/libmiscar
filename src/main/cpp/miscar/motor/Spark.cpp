@@ -3,11 +3,13 @@
 #include "miscar/motor/Spark.h"
 
 #include <rev/CANSparkMax.h>
+#include <units/time.h>
 
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
 constexpr int NEO_ENCODER_RESOLUTION = 4096;
+constexpr auto NEO_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Spark::Spark(std::string&& name, int id)
     : Motor(std::move(name), id, NEO_ENCODER_RESOLUTION),
@@ -22,9 +24,9 @@ miscar::Spark::Spark(std::string&& name, int id)
 
 double miscar::Spark::GetPercentOutput() { return GetAppliedOutput(); }
 
-double miscar::Spark::GetPosition() { return GetEncoder().GetPosition(); }
+double miscar::Spark::GetPosition() { return GetEncoder().GetPosition() / NEO_ENCODER_RESOLUTION; }
 
-double miscar::Spark::GetVelocity() { return GetEncoder().GetVelocity(); }
+double miscar::Spark::GetVelocity() { return GetEncoder().GetVelocity() / NEO_ENCODER_RESOLUTION / NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>(); }
 
 void miscar::Spark::SetOutput(double output, Mode mode) {
   switch (mode) {
@@ -32,10 +34,10 @@ void miscar::Spark::SetOutput(double output, Mode mode) {
       Set(output);
       break;
     case Position:
-      GetPIDController().SetReference(output, rev::ControlType::kPosition);
+      GetPIDController().SetReference(output * NEO_ENCODER_RESOLUTION, rev::ControlType::kPosition);
       break;
     case Velocity:
-      GetPIDController().SetReference(output, rev::ControlType::kVelocity);
+      GetPIDController().SetReference(output * NEO_ENCODER_RESOLUTION * NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>(), rev::ControlType::kVelocity);
       break;
   }
 }
@@ -55,7 +57,7 @@ void miscar::Spark::SetCurrentLimit(units::ampere_t limit) {
 }
 
 void miscar::Spark::SetPosition(double position) {
-  CANSparkMax::GetEncoder().SetPosition(position);
+  CANSparkMax::GetEncoder().SetPosition(position / NEO_ENCODER_RESOLUTION);
 }
 
 void miscar::Spark::Brake() {

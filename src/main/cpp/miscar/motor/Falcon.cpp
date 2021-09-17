@@ -11,7 +11,7 @@
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
-constexpr int FALCON_ENCODER_RESOLUTION = 4096;
+constexpr int FALCON_ENCODER_RESOLUTION = 2048;
 constexpr auto FALCON_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Falcon::Falcon(std::string&& name, int id)
@@ -44,10 +44,11 @@ void miscar::Falcon::SetOutput(double output, Mode mode) {
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output * FALCON_ENCODER_RESOLUTION);
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output * FALCON_ENCODER_RESOLUTION *
+         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>());
       break;
   }
 }
@@ -67,7 +68,7 @@ void miscar::Falcon::SetCurrentLimit(units::ampere_t limit) {
 }
 
 void miscar::Falcon::SetPosition(double position) {
-  SetSelectedSensorPosition(position);
+  SetSelectedSensorPosition(position / FALCON_ENCODER_RESOLUTION);
 }
 
 void miscar::Falcon::Brake() {

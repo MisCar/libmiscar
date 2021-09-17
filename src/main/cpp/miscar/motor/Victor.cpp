@@ -40,10 +40,10 @@ void miscar::Victor::SetOutput(double output, Mode mode) {
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output * GetEncoderResolution());
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output * GetEncoderResolution() * VICTOR_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
       break;
   }
 }
@@ -61,7 +61,7 @@ void miscar::Victor::SetCurrentLimit(units::ampere_t limit) {
 }
 
 void miscar::Victor::SetPosition(double position) {
-  SetSelectedSensorPosition(position);
+  SetSelectedSensorPosition(position * GetEncoderResolution());
 }
 
 void miscar::Victor::Brake() {
