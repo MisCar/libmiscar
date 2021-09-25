@@ -29,6 +29,7 @@ class Victor : public Motor,
   void SetPosition(double position) override;
   void Brake() override;
   void Coast() override;
+  void Invert() override;
 };
 
 }  // namespace miscar

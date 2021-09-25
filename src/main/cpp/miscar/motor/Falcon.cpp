@@ -25,6 +25,9 @@ miscar::Falcon::Falcon(std::string&& name, int id)
                  std::to_string(current_firmware) + " when " +
                  std::to_string(firmware::FALCON) + " is available.");
   }
+
+  ConfigFactoryDefault();
+  SetInverted(false);
 }
 
 double miscar::Falcon::GetPercentOutput() { return GetMotorOutputPercent(); }
@@ -44,11 +47,14 @@ void miscar::Falcon::SetOutput(double output, Mode mode) {
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output * FALCON_ENCODER_RESOLUTION);
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position,
+          output * FALCON_ENCODER_RESOLUTION);
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output * FALCON_ENCODER_RESOLUTION *
-         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>());
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
+          output * FALCON_ENCODER_RESOLUTION *
+              FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>()
+                  .to<double>());
       break;
   }
 }
@@ -78,3 +84,5 @@ void miscar::Falcon::Brake() {
 void miscar::Falcon::Coast() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
+
+void miscar::Falcon::Invert() { SetInverted(!GetInverted()); }

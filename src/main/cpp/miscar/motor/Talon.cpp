@@ -22,6 +22,9 @@ miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
                  " has outdated firmware: " + std::to_string(current_firmware) +
                  " when " + std::to_string(firmware::TALON) + " is available.");
   }
+
+  ConfigFactoryDefault();
+  SetInverted(false);
 }
 
 double miscar::Talon::GetPercentOutput() { return GetMotorOutputPercent(); }
@@ -41,10 +44,14 @@ void miscar::Talon::SetOutput(double output, Mode mode) {
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output * GetEncoderResolution());
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position,
+          output * GetEncoderResolution());
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output * GetEncoderResolution() * TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>());
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
+          output * GetEncoderResolution() *
+              TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>()
+                  .to<double>());
       break;
   }
 }
@@ -74,3 +81,5 @@ void miscar::Talon::Brake() {
 void miscar::Talon::Coast() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
+
+void miscar::Talon::Invert() { SetInverted(!GetInverted()); }

@@ -30,6 +30,7 @@ class Spark : public Motor, public rev::CANSparkMax {
   void SetPosition(double position) override;
   void Brake() override;
   void Coast() override;
+  void Invert() override;
 };
 
 }  // namespace miscar

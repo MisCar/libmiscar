@@ -28,6 +28,7 @@ class Falcon : public Motor, public ctre::phoenix::motorcontrol::can::TalonFX {
   void SetPosition(double position) override;
   void Brake() override;
   void Coast() override;
+  void Invert() override;
 };
 
 }  // namespace miscar

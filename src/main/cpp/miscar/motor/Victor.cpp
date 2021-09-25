@@ -21,6 +21,9 @@ miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
                  std::to_string(current_firmware) + " when " +
                  std::to_string(firmware::VICTOR) + " is available.");
   }
+
+  ConfigFactoryDefault();
+  SetInverted(false);
 }
 
 double miscar::Victor::GetPercentOutput() { return GetMotorOutputPercent(); }
@@ -40,10 +43,13 @@ void miscar::Victor::SetOutput(double output, Mode mode) {
       Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position, output * GetEncoderResolution());
+      Set(ctre::phoenix::motorcontrol::ControlMode::Position,
+          output * GetEncoderResolution());
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output * GetEncoderResolution() * VICTOR_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
+      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
+          output * GetEncoderResolution() *
+              VICTOR_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
       break;
   }
 }
@@ -71,3 +77,5 @@ void miscar::Victor::Brake() {
 void miscar::Victor::Coast() {
   SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
+
+void miscar::Victor::Invert() { SetInverted(!GetInverted()); }
