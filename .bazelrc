@@ -1,1 +1,18 @@
-build:osx --copt=-std=c++17
+--enable_platform_specific_config
+
+try-import user.bazelrc
+
+build --incompatible_enable_cc_toolchain_resolution
+
+# RoboRIO
+build:roborio --platforms=@bazelrio//platforms/roborio
+
+# Windows
+build:windows --copt=/std:c++17
+
+# Linux
+build:linux --copt=-std=c++17
+build:linux --linkopt=-pthread
+
+# MacOS
+build:macos --copt=-std=c++17
