@@ -16,13 +16,13 @@ jobs:
               with:
                   java-version: "11"
                   distribution: "adopt"
-            - name: Set up clang format
+            - name: Install Bazel
               run: |
-                  sudo apt-get install clang-format-12
-                  sudo ln -sf /usr/bin/clang-format-12 /usr/bin/clang-format
-            - name: Install roboRIO Toolchain
-              run: ./gradlew installRoboRioToolchain
-            - name: Run Tests
-              run: ./gradlew check
+                  sudo apt-get install -y apt-transport-https curl gnupg
+                  curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+                  sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
+                  echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+                  sudo apt-get update
+                  sudo apt-get install -y bazel
             - name: Build All
-              run: ./gradlew build
+              run: bazel build robot --platforms=@bazelrio//platforms/roborio

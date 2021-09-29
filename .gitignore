@@ -1,8 +1,8 @@
 .cache
 .gradle
 .idea
-build
 compile_commands.json
 compile_flags.txt
 **/.DS_Store
 IncludeAll.h
+bazel-*
