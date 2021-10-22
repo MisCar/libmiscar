@@ -1,3 +1,5 @@
+
+
 --enable_platform_specific_config
 
 try-import user.bazelrc
@@ -9,6 +11,7 @@ build:roborio --platforms=@bazelrio//platforms/roborio
 
 # Windows
 build:windows --copt=/std:c++17
+build:windows --features=compiler_param_file
 
 # Linux
 build:linux --copt=-std=c++17

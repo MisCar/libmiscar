@@ -1,28 +1,35 @@
 name: Build
-on:
-    pull_request:
-    push:
-        branches:
-            - main
+on: [pull_request, push]
 
 jobs:
-    build:
-        name: Build
+    build-macos:
+        name: MacOS
+        runs-on: macos-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: brew install osxfuse
+            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg -o sandboxfs.pkg && sudo installer -pkg sandboxfs.pkg -target /
+            - name: Build Roborio
+              run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
+            - name: Build Native
+              run: bazel build //...:* --config=macos --experimental_use_sandboxfs
+    build-linux:
+        name: Linux
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Set up JDK 11
-              uses: actions/setup-java@v2
-              with:
-                  java-version: "11"
-                  distribution: "adopt"
-            - name: Install Bazel
-              run: |
-                  sudo apt-get install -y apt-transport-https curl gnupg
-                  curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
-                  sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
-                  echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-                  sudo apt-get update
-                  sudo apt-get install -y bazel
-            - name: Build All
-              run: bazel build robot --platforms=@bazelrio//platforms/roborio
+            - run: sudo apt-get install libfuse-dev
+            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-linux-x86_64.tgz | sudo tar zxv -C /usr/local -f -
+            - name: Build Roborio
+              run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
+            - name: Build Native
+              run: bazel build //...:* --config=linux --experimental_use_sandboxfs
+    build-windows:
+        name: Windows
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Build Roborio
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=roborio --features=compiler_param_file
+            - name: Build Native
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=windows --features=compiler_param_file
