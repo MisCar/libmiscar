@@ -30,7 +30,8 @@ class Motor {
   virtual double GetPercentOutput() = 0;
   /** Get the current position of the motor's encoder in rotations. */
   virtual double GetPosition() = 0;
-  /** Get the current velocity of the motor's encoder in rotations per second.
+  /**
+   * Get the current velocity of the motor's encoder in rotations per second.
    */
   virtual double GetVelocity() = 0;
 
@@ -50,7 +51,7 @@ class Motor {
   virtual void Invert() = 0;
 
   /** All of the motors. */
-  static std::vector<Motor*>& GetInstances() { return m_instances; }
+  static std::vector<Motor*>& GetInstances();
 
  private:
   const std::string m_name;

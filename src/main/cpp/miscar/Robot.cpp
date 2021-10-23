@@ -4,6 +4,7 @@
 
 #include <frc/DriverStation.h>
 
+#include "frc2/command/Command.h"
 #include "miscar/Log.h"
 #include "miscar/Network.h"
 #include "miscar/motor/Motor.h"
@@ -44,6 +45,8 @@ void miscar::Robot::RobotInit() {
   network::Set("Test/I", 0);
   network::Set("Test/D", 0);
   network::Set("Test/F", 0);
+  network::Set("Test/I Zone", 0);
+  network::Set("Test/Slot", 0);
 }
 
 void miscar::Robot::RobotPeriodic() {
@@ -88,7 +91,9 @@ void miscar::Robot::TestPeriodic() {
     if (network::Get<bool>("Test/SetPID")) {
       motor->SetPID(
           {network::Get<double>("Test/P"), network::Get<double>("Test/I"),
-           network::Get<double>("Test/D"), network::Get<double>("Test/F")});
+           network::Get<double>("Test/D"), network::Get<double>("Test/F"),
+           network::Get<double>("Test/I Zone"),
+           network::Get<int>("Test/Slot")});
     }
 
     if (m_graph_chooser.GetSelected() == Motor::Position) {
@@ -97,4 +102,9 @@ void miscar::Robot::TestPeriodic() {
       network::Set("Test/Value", motor->GetVelocity());
     }
   }
+}
+
+void miscar::Robot::AddAutonomous(std::string_view name,
+                                  frc2::Command* command) {
+  m_autonomous_chooser.AddOption(name, command);
 }

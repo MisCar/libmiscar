@@ -28,6 +28,9 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
 
+ protected:
+  void AddAutonomous(std::string_view name, frc2::Command *command);
+
  private:
   frc::SendableChooser<frc2::Command *> m_autonomous_chooser;
   frc::SendableChooser<miscar::Motor::Mode> m_mode_chooser;

@@ -14,3 +14,7 @@ int miscar::Motor::GetId() { return m_id; }
 int miscar::Motor::GetEncoderResolution() { return m_encoder_resolution; }
 
 std::vector<miscar::Motor*> miscar::Motor::m_instances = std::vector<Motor*>();
+
+std::vector<miscar::Motor*>& miscar::Motor::GetInstances() {
+  return m_instances;
+}

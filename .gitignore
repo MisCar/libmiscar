@@ -5,3 +5,4 @@ compile_commands.json
 compile_flags.txt
 **/.DS_Store
 bazel-*
+IncludeAll.h
