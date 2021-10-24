@@ -4,6 +4,8 @@
 
 #include <frc/DriverStation.h>
 
+#include <string>
+
 #include "frc2/command/Command.h"
 #include "miscar/Log.h"
 #include "miscar/Network.h"
@@ -106,5 +108,5 @@ void miscar::Robot::TestPeriodic() {
 
 void miscar::Robot::AddAutonomous(std::string_view name,
                                   frc2::Command* command) {
-  m_autonomous_chooser.AddOption(name, command);
+  m_autonomous_chooser.AddOption(std::string(name), command);
 }
