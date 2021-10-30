@@ -18,7 +18,7 @@ miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
       TalonSRX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::TALON) {
-    log::Warning(GetName() +
+    log::Warning(std::string(GetName()) +
                  " has outdated firmware: " + std::to_string(current_firmware) +
                  " when " + std::to_string(firmware::TALON) + " is available.");
   }

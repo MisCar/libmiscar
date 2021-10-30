@@ -16,7 +16,7 @@ miscar::Spark::Spark(std::string&& name, int id)
       CANSparkMax(id, MotorType::kBrushless) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::SPARK) {
-    log::Warning(GetName() +
+    log::Warning(std::string(GetName()) +
                  " has outdated firmware: " + std::to_string(current_firmware) +
                  " when " + std::to_string(firmware::SPARK) + " is available.");
   }

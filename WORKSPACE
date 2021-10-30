@@ -2,8 +2,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "bazelrio",
-    strip_prefix = "bazelrio-main/bazelrio",
-    url = "https://github.com/noamzaks/bazelrio/archive/refs/heads/main.zip",
+    strip_prefix = "bazelRio-main/bazelrio",
+    url = "https://github.com/bazelrio/bazelrio/archive/refs/heads/main.zip",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")

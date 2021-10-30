@@ -21,7 +21,7 @@ miscar::Falcon::Falcon(std::string&& name, int id)
       TalonFX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::FALCON) {
-    log::Warning(GetName() + " has outdated firmware: " +
+    log::Warning(std::string(GetName()) + " has outdated firmware: " +
                  std::to_string(current_firmware) + " when " +
                  std::to_string(firmware::FALCON) + " is available.");
   }

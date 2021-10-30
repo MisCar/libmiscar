@@ -17,7 +17,7 @@ miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
       VictorSPX(id) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::VICTOR) {
-    log::Warning(GetName() + " has outdated firmware: " +
+    log::Warning(std::string(GetName()) + " has outdated firmware: " +
                  std::to_string(current_firmware) + " when " +
                  std::to_string(firmware::VICTOR) + " is available.");
   }

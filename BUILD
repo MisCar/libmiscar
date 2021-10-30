@@ -6,9 +6,9 @@ cc_library(
     strip_include_prefix = "src/main/cpp",
     visibility = ["//visibility:public"],
     deps = [
-        "@bazelrio//libraries/ctre/phoenix",
-        "@bazelrio//libraries/rev/sparkmax",
-        "@bazelrio//libraries/wpilib/commands",
-        "@bazelrio//libraries/wpilibc",
+        "@bazelrio//libraries/cpp/ctre/phoenix",
+        "@bazelrio//libraries/cpp/rev/sparkmax",
+        "@bazelrio//libraries/cpp/wpilib/new_commands",
+        "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ],
 )
