@@ -65,6 +65,34 @@ void Set(const std::string& path, std::vector<double> value);
 template <>
 void Set(const std::string& path, std::vector<std::string> value);
 
+/** Set a value in the Network Tables if it isn't set. */
+template <typename T>
+void SetDefault(const std::string& path, T value) = delete;
+
+template <>
+void SetDefault(const std::string& path, bool value);
+
+template <>
+void SetDefault(const std::string& path, int value);
+
+template <>
+void SetDefault(const std::string& path, double value);
+
+template <>
+void SetDefault(const std::string& path, std::string value);
+
+template <>
+void SetDefault(const std::string& path, std::vector<bool> value);
+
+template <>
+void SetDefault(const std::string& path, std::vector<int> value);
+
+template <>
+void SetDefault(const std::string& path, std::vector<double> value);
+
+template <>
+void SetDefault(const std::string& path, std::vector<std::string> value);
+
 /** Add a sendable to Network Tables. */
 void Add(const std::string& path, frc::Sendable& sendable);
 

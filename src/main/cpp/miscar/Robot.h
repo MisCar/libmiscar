@@ -7,6 +7,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/Command.h>
 
+#include "miscar/Solenoid.h"
 #include "miscar/motor/Motor.h"
 
 namespace miscar {
@@ -36,6 +37,7 @@ class Robot : public frc::TimedRobot {
   frc::SendableChooser<miscar::Motor::Mode> m_mode_chooser;
   frc::SendableChooser<miscar::Motor::Mode> m_graph_chooser;
   frc::SendableChooser<miscar::Motor *> m_motor_chooser;
+  frc::SendableChooser<miscar::Solenoid *> m_solenoid_chooser;
 };
 
 }  // namespace miscar

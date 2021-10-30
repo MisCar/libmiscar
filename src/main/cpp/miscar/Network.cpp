@@ -112,6 +112,66 @@ void miscar::network::Set(const std::string &path,
       .SetStringArray(value);
 }
 
+template <>
+void miscar::network::SetDefault(const std::string &path, bool value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultBoolean(value);
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path, int value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultDouble(value);
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path, double value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultDouble(value);
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path, std::string value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultString(value);
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path,
+                                 std::vector<bool> value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultBooleanArray(std::vector<int>(value.begin(), value.end()));
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path,
+                                 std::vector<int> value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultDoubleArray(std::vector<double>(value.begin(), value.end()));
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path,
+                                 std::vector<double> value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultDoubleArray(value);
+}
+
+template <>
+void miscar::network::SetDefault(const std::string &path,
+                                 std::vector<std::string> value) {
+  nt::NetworkTableInstance::GetDefault()
+      .GetEntry(TABLE_PREFIX + path)
+      .SetDefaultStringArray(value);
+}
+
 void miscar::network::Add(const std::string &path, frc::Sendable &sendable) {
   frc::SmartDashboard::PutData(path, &sendable);
 }

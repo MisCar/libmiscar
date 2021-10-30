@@ -11,13 +11,12 @@
 #include "miscar/Network.h"
 #include "miscar/motor/Motor.h"
 
-constexpr std::string_view GEVARIM[] = {"Zaks",  "Szpiler", "Sheffi", "Toto",
-                                        "Mayan", "Hadas",   "Barak"};
-constexpr auto GEVARIM_COUNT = sizeof(GEVARIM) / sizeof(GEVARIM[0]);
+constexpr std::array STARS = {"Zaks",  "Szpiler", "Sheffi", "Toto",
+                              "Mayan", "Hadas",   "Barak"};
 
 miscar::Robot::Robot() {
-  int index = (static_cast<double>(std::rand()) / RAND_MAX) * GEVARIM_COUNT;
-  network::Set("Gever", std::string(GEVARIM[index]));
+  int index = (static_cast<double>(std::rand()) / RAND_MAX) * STARS.size();
+  network::Set("Gever", std::string(STARS[index]));
 }
 
 miscar::Robot::~Robot() {}
@@ -32,7 +31,11 @@ void miscar::Robot::RobotInit() {
   m_graph_chooser.AddOption("Velocity", miscar::Motor::Velocity);
 
   for (const auto& motor : Motor::GetInstances()) {
-    m_motor_chooser.AddOption(motor->GetName(), motor);
+    m_motor_chooser.AddOption(std::string(motor->GetName()), motor);
+  }
+
+  for (const auto& solenoid : Solenoid::GetInstances()) {
+    m_solenoid_chooser.AddOption(std::string(solenoid->GetName()), solenoid);
   }
 
   network::Add("Mode", m_mode_chooser);
@@ -40,15 +43,18 @@ void miscar::Robot::RobotInit() {
   network::Add("Autonomous", m_autonomous_chooser);
   network::Add("Graph", m_graph_chooser);
 
-  network::Set("Test/Enabled", false);
-  network::Set("Test/Output", 0);
-  network::Set("Test/SetPID", false);
-  network::Set("Test/P", 0);
-  network::Set("Test/I", 0);
-  network::Set("Test/D", 0);
-  network::Set("Test/F", 0);
-  network::Set("Test/I Zone", 0);
-  network::Set("Test/Slot", 0);
+  network::SetDefault("Test/Motors/Enabled", false);
+  network::SetDefault("Test/Motors/Output", 0);
+  network::SetDefault("Test/Motors/SetPID", false);
+  network::SetDefault("Test/Motors/P", 0);
+  network::SetDefault("Test/Motors/I", 0);
+  network::SetDefault("Test/Motors/D", 0);
+  network::SetDefault("Test/Motors/F", 0);
+  network::SetDefault("Test/Motors/I Zone", 0);
+  network::SetDefault("Test/Motors/Slot", 0);
+
+  network::SetDefault("Test/Solenoids/Enabled", false);
+  network::SetDefault("Test/Solenoids/Output", false);
 }
 
 void miscar::Robot::RobotPeriodic() {
@@ -85,23 +91,31 @@ void miscar::Robot::TeleopPeriodic() {
 void miscar::Robot::TestPeriodic() {
   auto motor = m_motor_chooser.GetSelected();
   if (motor != nullptr) {
-    if (network::Get<bool>("Test/Enabled")) {
-      motor->SetOutput(network::Get<double>("Test/Output"),
+    if (network::Get<bool>("Test/Motors/Enabled")) {
+      motor->SetOutput(network::Get<double>("Test/Motors/Output"),
                        m_mode_chooser.GetSelected());
     }
 
-    if (network::Get<bool>("Test/SetPID")) {
-      motor->SetPID(
-          {network::Get<double>("Test/P"), network::Get<double>("Test/I"),
-           network::Get<double>("Test/D"), network::Get<double>("Test/F"),
-           network::Get<double>("Test/I Zone"),
-           network::Get<int>("Test/Slot")});
+    if (network::Get<bool>("Test/Motors/SetPID")) {
+      motor->SetPID(PID(network::Get<double>("Test/Motors/P"),
+                        network::Get<double>("Test/Motors/I"),
+                        network::Get<double>("Test/Motors/D"),
+                        network::Get<double>("Test/Motors/F"),
+                        network::Get<double>("Test/Motors/I Zone"),
+                        network::Get<int>("Test/Motors/Slot")));
     }
 
     if (m_graph_chooser.GetSelected() == Motor::Position) {
-      network::Set("Test/Value", motor->GetPosition());
+      network::Set("Test/Motors/Value", motor->GetPosition());
     } else {
-      network::Set("Test/Value", motor->GetVelocity());
+      network::Set("Test/Motors/Value", motor->GetVelocity());
+    }
+  }
+
+  auto solenoid = m_solenoid_chooser.GetSelected();
+  if (solenoid != nullptr) {
+    if (network::Get<bool>("Test/Solenoids/Enabled")) {
+      solenoid->Set(network::Get<bool>("Test/Solenoids/Output"));
     }
   }
 }
