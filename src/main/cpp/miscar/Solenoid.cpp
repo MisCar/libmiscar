@@ -13,3 +13,6 @@ std::string_view miscar::Solenoid::GetName() { return m_name; }
 std::vector<miscar::Solenoid *> &miscar::Solenoid::GetInstances() {
   return m_instances;
 }
+
+std::vector<miscar::Solenoid *> miscar::Solenoid::m_instances =
+    std::vector<Solenoid *>();
