@@ -1,6 +1,5 @@
 // Copyright (c) MisCar 1574
 
-#include "Solenoid.h"
 #include "miscar/Solenoid.h"
 
 #include <utility>
