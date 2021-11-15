@@ -27,11 +27,12 @@ void miscar::Robot::RobotInit() {
   m_mode_chooser.AddOption("Position", miscar::Motor::Position);
   m_mode_chooser.AddOption("Velocity", miscar::Motor::Velocity);
 
-  m_graph_chooser.SetDefaultOption("Position", miscar::Motor::Position);
-  m_graph_chooser.AddOption("Velocity", miscar::Motor::Velocity);
+  m_graph_mode_chooser.SetDefaultOption("Position", miscar::Motor::Position);
+  m_graph_mode_chooser.AddOption("Velocity", miscar::Motor::Velocity);
 
   for (const auto& motor : Motor::GetInstances()) {
-    m_motor_chooser.AddOption(std::string(motor->GetName()), motor);
+    m_activate_motor_chooser.AddOption(std::string(motor->GetName()), motor);
+    m_sensor_motor_chooser.AddOption(std::string(motor->GetName()), motor);
   }
 
   for (const auto& solenoid : Solenoid::GetInstances()) {
@@ -39,9 +40,10 @@ void miscar::Robot::RobotInit() {
   }
 
   network::Add("Mode", m_mode_chooser);
-  network::Add("Motor", m_motor_chooser);
+  network::Add("Activate Motor", m_activate_motor_chooser);
+  network::Add("Sensor Motor", m_sensor_motor_chooser);
   network::Add("Autonomous", m_autonomous_chooser);
-  network::Add("Graph", m_graph_chooser);
+  network::Add("Graph", m_graph_mode_chooser);
 
   network::SetDefault("Test/Motors/Enabled", false);
   network::SetDefault("Test/Motors/Output", 0);
@@ -89,26 +91,29 @@ void miscar::Robot::TeleopPeriodic() {
 }
 
 void miscar::Robot::TestPeriodic() {
-  auto motor = m_motor_chooser.GetSelected();
-  if (motor != nullptr) {
+  auto activate_motor = m_activate_motor_chooser.GetSelected();
+  if (activate_motor != nullptr) {
     if (network::Get<bool>("Test/Motors/Enabled")) {
-      motor->SetOutput(network::Get<double>("Test/Motors/Output"),
-                       m_mode_chooser.GetSelected());
+      activate_motor->SetOutput(network::Get<double>("Test/Motors/Output"),
+                                m_mode_chooser.GetSelected());
     }
 
     if (network::Get<bool>("Test/Motors/SetPID")) {
-      motor->SetPID(PID(network::Get<double>("Test/Motors/P"),
-                        network::Get<double>("Test/Motors/I"),
-                        network::Get<double>("Test/Motors/D"),
-                        network::Get<double>("Test/Motors/F"),
-                        network::Get<double>("Test/Motors/I Zone"),
-                        network::Get<int>("Test/Motors/Slot")));
+      activate_motor->SetPID(PID(network::Get<double>("Test/Motors/P"),
+                                 network::Get<double>("Test/Motors/I"),
+                                 network::Get<double>("Test/Motors/D"),
+                                 network::Get<double>("Test/Motors/F"),
+                                 network::Get<double>("Test/Motors/I Zone"),
+                                 network::Get<int>("Test/Motors/Slot")));
     }
+  }
 
-    if (m_graph_chooser.GetSelected() == Motor::Position) {
-      network::Set("Test/Motors/Value", motor->GetPosition());
+  auto sensor_motor = m_sensor_motor_chooser.GetSelected();
+  if (sensor_motor != nullptr) {
+    if (m_graph_mode_chooser.GetSelected() == Motor::Position) {
+      network::Set("Test/Motors/Value", sensor_motor->GetPosition());
     } else {
-      network::Set("Test/Motors/Value", motor->GetVelocity());
+      network::Set("Test/Motors/Value", sensor_motor->GetVelocity());
     }
   }
 

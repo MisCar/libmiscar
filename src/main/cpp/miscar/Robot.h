@@ -35,8 +35,9 @@ class Robot : public frc::TimedRobot {
  private:
   frc::SendableChooser<frc2::Command *> m_autonomous_chooser;
   frc::SendableChooser<miscar::Motor::Mode> m_mode_chooser;
-  frc::SendableChooser<miscar::Motor::Mode> m_graph_chooser;
-  frc::SendableChooser<miscar::Motor *> m_motor_chooser;
+  frc::SendableChooser<miscar::Motor::Mode> m_graph_mode_chooser;
+  frc::SendableChooser<miscar::Motor *> m_activate_motor_chooser;
+  frc::SendableChooser<miscar::Motor *> m_sensor_motor_chooser;
   frc::SendableChooser<miscar::Solenoid *> m_solenoid_chooser;
 };
 
