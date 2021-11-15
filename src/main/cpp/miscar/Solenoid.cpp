@@ -3,12 +3,14 @@
 #include "Solenoid.h"
 #include "miscar/Solenoid.h"
 
-miscar::Solenoid::Solenoid(std::string_view name, int port)
-    : frc::Solenoid(port), m_name(name) {
+#include <utility>
+
+miscar::Solenoid::Solenoid(std::string name, int port)
+    : frc::Solenoid(port), m_name(std::move(name)) {
   m_instances.push_back(this);
 }
 
-std::string_view miscar::Solenoid::GetName() { return m_name; }
+const std::string &miscar::Solenoid::GetName() { return m_name; }
 
 std::vector<miscar::Solenoid *> &miscar::Solenoid::GetInstances() {
   return m_instances;
