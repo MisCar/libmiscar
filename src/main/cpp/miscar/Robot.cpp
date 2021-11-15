@@ -54,6 +54,7 @@ void miscar::Robot::RobotInit() {
   network::SetDefault("Test/Motors/F", 0);
   network::SetDefault("Test/Motors/I Zone", 0);
   network::SetDefault("Test/Motors/Slot", 0);
+  network::SetDefault("Test/Motors/Value", 0);
 
   network::SetDefault("Test/Solenoids/Enabled", false);
   network::SetDefault("Test/Solenoids/Output", false);
