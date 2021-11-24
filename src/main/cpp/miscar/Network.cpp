@@ -172,6 +172,6 @@ void miscar::network::SetDefault(const std::string &path,
       .SetDefaultStringArray(value);
 }
 
-void miscar::network::Add(const std::string &path, frc::Sendable &sendable) {
+void miscar::network::Add(const std::string &path, wpi::Sendable &sendable) {
   frc::SmartDashboard::PutData(path, &sendable);
 }

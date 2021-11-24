@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "frc/smartdashboard/Sendable.h"
+#include <wpi/sendable/Sendable.h>
 
 namespace miscar::network {
 
@@ -94,6 +94,6 @@ template <>
 void SetDefault(const std::string& path, std::vector<std::string> value);
 
 /** Add a sendable to Network Tables. */
-void Add(const std::string& path, frc::Sendable& sendable);
+void Add(const std::string& path, wpi::Sendable& sendable);
 
 }  // namespace miscar::network

@@ -62,8 +62,7 @@ void miscar::Robot::RobotInit() {
 
 void miscar::Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-  network::Set("Battery",
-               frc::DriverStation::GetInstance().GetBatteryVoltage());
+  network::Set("Battery", frc::DriverStation::GetBatteryVoltage());
 }
 
 void miscar::Robot::DisabledInit() {}

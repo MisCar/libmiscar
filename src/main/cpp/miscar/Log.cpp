@@ -2,13 +2,14 @@
 
 #include "miscar/Log.h"
 
-#include <frc/DriverStation.h>
+#include <frc/Errors.h>
 #include <networktables/NetworkTableInstance.h>
+#include "frc/Errors.h"
 
 void miscar::log::Warning(const std::string& message) {
-  frc::DriverStation::GetInstance().ReportWarning("[MisCar]   " + message);
+  FRC_ReportError(1574, "[MisCar WARNING] {}", message);
 }
 
 void miscar::log::Error(const std::string& message) {
-  frc::DriverStation::GetInstance().ReportError("[MisCar]   " + message);
+  FRC_ReportError(1574, "[MisCar ERROR] {}", message);
 }

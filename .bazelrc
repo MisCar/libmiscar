@@ -2,6 +2,13 @@ try-import user.bazelrc
 
 build --incompatible_enable_cc_toolchain_resolution
 build --enable_platform_specific_config
+build --experimental_enable_runfiles  # Needed explicitly on Windows
+
+# Uncomment me on macOS and Linux. See https://github.com/bazelbuild/sandboxfs/blob/master/INSTALL.md.
+# build --experimental_use_sandboxfs
+
+# Uncomment me on Windows if you have spaces in your default output_user_root (very likely).
+# startup --output_user_root=C:\\bazelroot
 
 # Windows
 build:windows --features=compiler_param_file
@@ -16,9 +23,10 @@ build:linux --experimental_repository_cache ~/.local/share/bazel
 build:macos --copt=-std=c++17
 build:macos --experimental_repository_cache ~/.local/share/bazel
 
-# For RoboRIO
+# For Roborio
 build:for-roborio --platforms=@bazelrio//platforms/roborio
 build:for-roborio --linkopt=-ldl
+build:for-roborio --copt=-Wno-psabi
 
 # For Windows
 build:for-windows --copt=/std:c++17

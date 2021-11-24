@@ -6,3 +6,4 @@ compile_flags.txt
 **/.DS_Store
 bazel-*
 IncludeAll.h
+user.bazelrc

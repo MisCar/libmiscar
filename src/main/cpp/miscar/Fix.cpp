@@ -5,5 +5,5 @@
 #include <cmath>
 
 double miscar::Fix(double value, double range) {
-  return (std::abs(value) < range) ? 0 : value;
+  return (std::abs(value) < range) ? 0 : (value - range) / (1 - range);
 }

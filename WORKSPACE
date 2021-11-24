@@ -8,7 +8,10 @@ http_archive(
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
 
-setup_bazelrio_dependencies()
+setup_bazelrio_dependencies(
+    phoenix_version = "5.20.0-beta-1",
+    wpilib_version = "2022.1.1-beta-2",
+)
 
 register_toolchains("@bazelrio//toolchains/roborio")
 
