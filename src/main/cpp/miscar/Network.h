@@ -2,10 +2,10 @@
 
 #pragma once
 
+#include <wpi/sendable/Sendable.h>
+
 #include <string>
 #include <vector>
-
-#include <wpi/sendable/Sendable.h>
 
 namespace miscar::network {
 

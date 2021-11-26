@@ -2,11 +2,11 @@
 
 #include "Robot.h"
 
-#include <frc/DriverStation.h>
-
 #include <string>
 
-#include "frc2/command/Command.h"
+#include <frc/DriverStation.h>
+#include <frc2/command/Command.h>
+
 #include "miscar/Log.h"
 #include "miscar/Network.h"
 #include "miscar/motor/Motor.h"

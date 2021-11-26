@@ -2,9 +2,9 @@
 
 #include "miscar/Log.h"
 
-#include <frc/Errors.h>
 #include <networktables/NetworkTableInstance.h>
-#include "frc/Errors.h"
+
+#include <frc/Errors.h>
 
 void miscar::log::Warning(const std::string& message) {
   FRC_ReportError(1574, "[MisCar WARNING] {}", message);

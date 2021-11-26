@@ -2,21 +2,22 @@
 
 #pragma once
 
-#include <ctre/phoenix/motorcontrol/ControlMode.h>
-#include <ctre/phoenix/motorcontrol/can/TalonSRX.h>
-
 #include <string>
+
+#include <ctre/phoenix/motorcontrol/ControlMode.h>
+#include <ctre/phoenix/motorcontrol/can/VictorSPX.h>
 
 #include "miscar/motor/Motor.h"
 
 namespace miscar {
 
 /**
- * AKA CTRE Talon SRX.
- * https://www.ctr-electronics.com/talon-srx.html
+ * AKA CTRE Victor SPX.
+ * http://www.ctr-electronics.com/victor-spx.html
  */
-class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
-  Talon(std::string&& name, int id, int encoder_resolution);
+class Victor : public Motor,
+               public ctre::phoenix::motorcontrol::can::VictorSPX {
+  Victor(std::string&& name, int id, int encoder_resolution);
 
   double GetPercentOutput() override;
   double GetPosition() override;

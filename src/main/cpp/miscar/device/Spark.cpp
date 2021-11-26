@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/motor/Spark.h"
+#include "miscar/device/Spark.h"
 
 #include <rev/CANSparkMax.h>
 #include <units/time.h>
@@ -33,7 +33,7 @@ double miscar::Spark::GetPosition() {
 
 double miscar::Spark::GetVelocity() {
   return GetEncoder().GetVelocity() / NEO_ENCODER_RESOLUTION /
-         NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>();
+         NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
 }
 
 void miscar::Spark::SetOutput(double output, Mode mode) {
@@ -43,13 +43,13 @@ void miscar::Spark::SetOutput(double output, Mode mode) {
       break;
     case Position:
       GetPIDController().SetReference(output * NEO_ENCODER_RESOLUTION,
-                                      rev::ControlType::kPosition);
+                                      rev::CANSparkMax::ControlType::kPosition);
       break;
     case Velocity:
       GetPIDController().SetReference(
           output * NEO_ENCODER_RESOLUTION *
-              NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>(),
-          rev::ControlType::kVelocity);
+              NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value(),
+          rev::CANSparkMax::ControlType::kVelocity);
       break;
   }
 }

@@ -2,21 +2,23 @@
 
 #pragma once
 
-#include <ctre/phoenix/motorcontrol/can/TalonFX.h>
-
 #include <string>
+
+#include <rev/CANSparkMax.h>
 
 #include "miscar/motor/Motor.h"
 
 namespace miscar {
 
 /**
- * AKA CTRE/VEX Talon FX.
- * https://www.ctr-electronics.com/talon-fx.html
+ * AKA REV Robotics Spark Max.
+ * https://www.revrobotics.com/rev-11-2158/
+ * Used for NEO motors.
+ * We only use Sparks with brushless NEOs.
  */
-class Falcon : public Motor, public ctre::phoenix::motorcontrol::can::TalonFX {
+class Spark : public Motor, public rev::CANSparkMax {
  public:
-  Falcon(std::string&& name, int id);
+  Spark(std::string&& name, int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

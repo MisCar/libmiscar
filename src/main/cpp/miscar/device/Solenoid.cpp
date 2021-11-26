@@ -1,9 +1,10 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/Solenoid.h"
+#include "miscar/device/Solenoid.h"
 
 #include <utility>
-#include "frc/PneumaticsModuleType.h"
+
+#include <frc/PneumaticsModuleType.h>
 
 miscar::Solenoid::Solenoid(std::string name, int port)
     : frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, port),

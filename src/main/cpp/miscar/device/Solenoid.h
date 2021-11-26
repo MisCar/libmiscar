@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include <frc/Solenoid.h>
-
+#include <string>
 #include <vector>
+
+#include <frc/Solenoid.h>
 
 namespace miscar {
 

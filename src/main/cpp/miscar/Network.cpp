@@ -2,10 +2,11 @@
 
 #include "Network.h"
 
-#include <frc/smartdashboard/SmartDashboard.h>
 #include <networktables/NetworkTableInstance.h>
 
 #include <string>
+
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #define TABLE_PREFIX "/MisCar/"
 

@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/motor/Talon.h"
+#include "miscar/device/Talon.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
@@ -35,7 +35,7 @@ double miscar::Talon::GetPosition() {
 
 double miscar::Talon::GetVelocity() {
   return GetSelectedSensorVelocity() / GetEncoderResolution() /
-         TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>();
+         TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
 }
 
 void miscar::Talon::SetOutput(double output, Mode mode) {
@@ -50,8 +50,7 @@ void miscar::Talon::SetOutput(double output, Mode mode) {
     case Velocity:
       Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
           output * GetEncoderResolution() *
-              TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>()
-                  .to<double>());
+              TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
       break;
   }
 }

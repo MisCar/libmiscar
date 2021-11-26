@@ -7,7 +7,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/Command.h>
 
-#include "miscar/Solenoid.h"
+#include "miscar/device/Solenoid.h"
 #include "miscar/motor/Motor.h"
 
 namespace miscar {

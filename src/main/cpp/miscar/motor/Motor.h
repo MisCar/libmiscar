@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include <units/current.h>
-
 #include <memory>
 #include <string>
 #include <vector>
+
+#include <units/current.h>
 
 #include "miscar/PID.h"
 

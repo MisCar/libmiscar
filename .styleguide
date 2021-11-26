@@ -13,3 +13,11 @@ generatedFileExclude {
   external/
   gradle-wrapper.jar
 }
+
+includeOtherLibs {
+  ^ctre/
+  ^rev/
+  ^units/
+  ^frc/
+  ^frc2/
+}

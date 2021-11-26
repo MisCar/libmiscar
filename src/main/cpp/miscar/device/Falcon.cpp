@@ -1,13 +1,13 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/motor/Falcon.h"
+#include "miscar/device/Falcon.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
+#include <ctre/phoenix/motorcontrol/can/BaseMotorController.h>
+#include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 #include <units/time.h>
 
-#include "ctre/phoenix/motorcontrol/can/BaseMotorController.h"
-#include "ctre/phoenix/motorcontrol/can/TalonFX.h"
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
 
@@ -38,7 +38,7 @@ double miscar::Falcon::GetPosition() {
 
 double miscar::Falcon::GetVelocity() {
   return GetSelectedSensorVelocity() / FALCON_ENCODER_RESOLUTION /
-         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().to<double>();
+         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
 }
 
 void miscar::Falcon::SetOutput(double output, Mode mode) {
@@ -53,8 +53,7 @@ void miscar::Falcon::SetOutput(double output, Mode mode) {
     case Velocity:
       Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
           output * FALCON_ENCODER_RESOLUTION *
-              FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>()
-                  .to<double>());
+              FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
       break;
   }
 }

@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/motor/Victor.h"
+#include "miscar/device/Victor.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
