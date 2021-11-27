@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 http_archive(
     name = "bazelrio",
@@ -13,11 +14,12 @@ setup_bazelrio_dependencies(
     wpilib_version = "2022.1.1-beta-2",
 )
 
-register_toolchains("@bazelrio//toolchains/roborio")
+load("@bazelrio//:defs.bzl", "setup_bazelrio")
 
-load("@rules_python//python:pip.bzl", "pip_install")
+setup_bazelrio()
 
-pip_install(
-    name = "__bazelrio_deploy_pip_deps",
-    requirements = "@bazelrio//deploy:requirements.txt",
+git_repository(
+    name = "gtest",
+    branch = "main",
+    remote = "https://github.com/google/googletest",
 )

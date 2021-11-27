@@ -24,7 +24,7 @@ class Convertible : public T {
   /**
    * @param ratio The amount of distance units in a tick.
    */
-  explicit Convertible(const T &t, distance_t ratio) : T(t), m_ratio(ratio) {}
+  explicit Convertible(T &&t, distance_t ratio) : T(t), m_ratio(ratio) {}
 
   distance_t GetConvertedPosition() { return Motor::GetPosition() * m_ratio; }
 
@@ -32,15 +32,11 @@ class Convertible : public T {
     return Motor::GetVelocity() / 1_s * m_ratio;
   }
 
-  double GetPosition() {
-    miscar::log::Warning(
-        "You shouldn't get unconverted position on a convertible motor");
+  [[deprecated("Use GetConvertedPosition() instead")]] double GetPosition() {
     return T::GetPosition();
   }
 
-  double GetVelocity() {
-    miscar::log::Warning(
-        "You shouldn't get unconverted velocity on a convertible motor");
+  [[deprecated("Use GetConvertedVelocity() instead")]] double GetVelocity() {
     return T::GetVelocity();
   }
 
@@ -48,12 +44,12 @@ class Convertible : public T {
 
   void SetOutput(distance_t output) {
     auto rotations = output / m_ratio;
-    SetOutput(rotations, Motor::Mode::Position);
+    T::SetOutput(rotations, Motor::Mode::Position);
   }
 
   void SetOutput(velocity_t output) {
     auto rotations_per_second = output / m_ratio * 1_s;
-    SetOutput(rotations_per_second, Motor::Mode::Velocity);
+    T::SetOutput(rotations_per_second, Motor::Mode::Velocity);
   }
 
  private:

@@ -9,19 +9,19 @@
 
 namespace miscar {
 
-/** A motor which cannot go above a certain position. */
+/** A motor which cannot go below a certain position. */
 template <typename T,
           typename = std::enable_if<std::is_base_of<T, Motor>::value>>
-class UpperLimited : public T {
+class LowerLimited : public T {
  public:
-  UpperLimited(const T &m, double limit) : T(m), m_limit(limit) {}
+  LowerLimited(T &&t, double limit) : T(t), m_limit(limit) {}
 
   void SetOutput(double output, Motor::Mode mode) override {
     if (mode != Motor::Position) {
       log::Warning(
           "A limited motor shouldn't be set with modes other than position");
     } else {
-      if (output > m_limit) {
+      if (output < m_limit) {
         output = m_limit;
       }
     }

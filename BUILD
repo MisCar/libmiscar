@@ -15,3 +15,12 @@ cc_library(
         "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ],
 )
+
+cc_test(
+    name = "miscar.test",
+    srcs = glob(["test/cpp/**/*.cpp"]),
+    deps = [
+        ":miscar",
+        "@gtest",
+    ],
+)
