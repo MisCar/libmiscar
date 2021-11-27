@@ -1,6 +1,9 @@
 cc_library(
     name = "miscar",
-    srcs = glob(["src/main/cpp/miscar/**/*.cpp"]),
+    srcs = glob([
+        "src/main/cpp/miscar/**/*.cpp",
+        "src/main/cpp/miscar/**/*.h",
+    ]),
     hdrs = glob(["src/main/cpp/**/*.h"]),
     includes = ["src/main/cpp"],
     strip_include_prefix = "src/main/cpp",
