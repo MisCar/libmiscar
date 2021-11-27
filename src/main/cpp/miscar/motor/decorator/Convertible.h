@@ -6,6 +6,7 @@
 
 #include <units/time.h>
 
+#include "miscar/Log.h"
 #include "miscar/motor/Motor.h"
 
 namespace miscar {
@@ -25,9 +26,23 @@ class Convertible : public T {
    */
   explicit Convertible(const T &t, distance_t ratio) : T(t), m_ratio(ratio) {}
 
-  distance_t GetPosition() { return Motor::GetPosition() * m_ratio; }
+  distance_t GetConvertedPosition() { return Motor::GetPosition() * m_ratio; }
 
-  velocity_t GetVelocity() { return Motor::GetVelocity() / 1_s * m_ratio; }
+  velocity_t GetConvertedVelocity() {
+    return Motor::GetVelocity() / 1_s * m_ratio;
+  }
+
+  double GetPosition() {
+    miscar::log::Warning(
+        "You shouldn't get unconverted position on a convertible motor");
+    return T::GetPosition();
+  }
+
+  double GetVelocity() {
+    miscar::log::Warning(
+        "You shouldn't get unconverted velocity on a convertible motor");
+    return T::GetVelocity();
+  }
 
   void SetPosition(distance_t position) { SetPosition(position / m_ratio); }
 
