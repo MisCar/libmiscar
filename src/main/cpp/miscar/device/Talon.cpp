@@ -11,8 +11,8 @@
 
 constexpr auto TALON_VELOCITY_SAMPLE_RATE = 100_ms;
 
-miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
-    : Motor(std::move(name), id, encoder_resolution), m_talon(id) {
+miscar::Talon::Talon(std::string name, int id, int encoder_resolution)
+    : Motor(name, id, encoder_resolution), m_talon(id) {
   const int current_firmware = m_talon.GetFirmwareVersion();
   if (current_firmware != firmware::TALON) {
     log::Warning(std::string(GetName()) +

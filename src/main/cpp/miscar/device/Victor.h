@@ -16,7 +16,7 @@ namespace miscar {
  * http://www.ctr-electronics.com/victor-spx.html
  */
 class Victor : public Motor {
-  Victor(std::string&& name, int id, int encoder_resolution);
+  Victor(std::string name, int id, int encoder_resolution);
 
   double GetPercentOutput() override;
   double GetPosition() override;

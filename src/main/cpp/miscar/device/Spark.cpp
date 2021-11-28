@@ -11,8 +11,8 @@
 constexpr int NEO_ENCODER_RESOLUTION = 4096;
 constexpr auto NEO_VELOCITY_SAMPLE_RATE = 100_ms;
 
-miscar::Spark::Spark(std::string&& name, int id)
-    : Motor(std::move(name), id, NEO_ENCODER_RESOLUTION),
+miscar::Spark::Spark(std::string name, int id)
+    : Motor(name, id, NEO_ENCODER_RESOLUTION),
       CANSparkMax(id, MotorType::kBrushless) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::SPARK) {

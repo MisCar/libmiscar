@@ -16,7 +16,7 @@ namespace miscar {
  */
 class Falcon : public Motor {
  public:
-  Falcon(std::string&& name, int id);
+  Falcon(std::string name, int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

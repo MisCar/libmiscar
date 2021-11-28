@@ -18,7 +18,7 @@ namespace miscar {
  */
 class Spark : public Motor, public rev::CANSparkMax {
  public:
-  Spark(std::string&& name, int id);
+  Spark(std::string name, int id);
 
   double GetPercentOutput() override;
   double GetPosition() override;

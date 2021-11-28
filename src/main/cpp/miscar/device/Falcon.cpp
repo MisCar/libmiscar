@@ -14,8 +14,8 @@
 constexpr int FALCON_ENCODER_RESOLUTION = 2048;
 constexpr auto FALCON_VELOCITY_SAMPLE_RATE = 100_ms;
 
-miscar::Falcon::Falcon(std::string&& name, int id)
-    : Motor(std::move(name), id, FALCON_ENCODER_RESOLUTION), m_falcon(id) {
+miscar::Falcon::Falcon(std::string name, int id)
+    : Motor(name, id, FALCON_ENCODER_RESOLUTION), m_falcon(id) {
   const int current_firmware = m_falcon.GetFirmwareVersion();
   if (current_firmware != firmware::FALCON) {
     log::Warning(std::string(GetName()) + " has outdated firmware: " +

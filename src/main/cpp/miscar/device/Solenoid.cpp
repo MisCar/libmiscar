@@ -7,8 +7,7 @@
 #include <frc/PneumaticsModuleType.h>
 
 miscar::Solenoid::Solenoid(std::string name, int port)
-    : frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, port),
-      m_name(std::move(name)) {
+    : frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, port), m_name(name) {
   m_instances.push_back(this);
 }
 

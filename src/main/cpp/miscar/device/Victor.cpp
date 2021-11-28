@@ -11,8 +11,8 @@
 
 constexpr auto VICTOR_VELOCITY_SAMPLE_RATE = 100_ms;
 
-miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
-    : Motor(std::move(name), id, encoder_resolution), m_victor(id) {
+miscar::Victor::Victor(std::string name, int id, int encoder_resolution)
+    : Motor(name, id, encoder_resolution), m_victor(id) {
   const int current_firmware = m_victor.GetFirmwareVersion();
   if (current_firmware != firmware::VICTOR) {
     log::Warning(std::string(GetName()) + " has outdated firmware: " +

@@ -5,7 +5,8 @@
 #include "miscar/motor/Convertible.h"
 
 TEST(ConvertibleTest, CanConstruct) {
-  miscar::Convertible<miscar::Falcon, units::meter> convertible(1_m, "Test", 0);
+  miscar::Convertible<miscar::Falcon, units::meter> convertible(
+      1_m, std::string("Test"), 0);
   auto &c =
       static_cast<ctre::phoenix::motorcontrol::can::TalonFX &>(convertible);
 }
