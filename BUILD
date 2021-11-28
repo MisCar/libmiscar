@@ -18,7 +18,7 @@ cc_library(
 
 cc_test(
     name = "miscar.test",
-    srcs = glob(["test/cpp/**/*.cpp"]),
+    srcs = glob(["src/test/cpp/**/*.cpp"]),
     deps = [
         ":miscar",
         "@gtest",

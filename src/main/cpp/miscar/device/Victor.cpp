@@ -12,42 +12,44 @@
 constexpr auto VICTOR_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Victor::Victor(std::string&& name, int id, int encoder_resolution)
-    : BaseMotorController(id, "Victor SRX"),
-      Motor(std::move(name), id, encoder_resolution),
-      VictorSPX(id) {
-  const int current_firmware = GetFirmwareVersion();
+    : Motor(std::move(name), id, encoder_resolution), m_victor(id) {
+  const int current_firmware = m_victor.GetFirmwareVersion();
   if (current_firmware != firmware::VICTOR) {
     log::Warning(std::string(GetName()) + " has outdated firmware: " +
                  std::to_string(current_firmware) + " when " +
                  std::to_string(firmware::VICTOR) + " is available.");
   }
 
-  ConfigFactoryDefault();
-  SetInverted(false);
+  m_victor.ConfigFactoryDefault();
+  m_victor.SetInverted(false);
 }
 
-double miscar::Victor::GetPercentOutput() { return GetMotorOutputPercent(); }
+double miscar::Victor::GetPercentOutput() {
+  return m_victor.GetMotorOutputPercent();
+}
 
 double miscar::Victor::GetPosition() {
-  return GetSelectedSensorPosition() / GetEncoderResolution();
+  return m_victor.GetSelectedSensorPosition() / GetEncoderResolution();
 }
 
 double miscar::Victor::GetVelocity() {
-  return GetSelectedSensorVelocity() / GetEncoderResolution() /
+  return m_victor.GetSelectedSensorVelocity() / GetEncoderResolution() /
          VICTOR_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
 }
 
 void miscar::Victor::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
-      Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
+      m_victor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput,
+                   output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position,
-          output * GetEncoderResolution());
+      m_victor.Set(ctre::phoenix::motorcontrol::ControlMode::Position,
+                   output * GetEncoderResolution());
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
+      m_victor.Set(
+          ctre::phoenix::motorcontrol::ControlMode::Velocity,
           output * GetEncoderResolution() *
               VICTOR_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
       break;
@@ -55,11 +57,11 @@ void miscar::Victor::SetOutput(double output, Mode mode) {
 }
 
 void miscar::Victor::SetPID(PID pid) {
-  Config_kP(pid.slot, pid.p);
-  Config_kI(pid.slot, pid.i);
-  Config_kD(pid.slot, pid.d);
-  Config_kF(pid.slot, pid.f);
-  Config_IntegralZone(pid.slot, pid.integral_zone);
+  m_victor.Config_kP(pid.slot, pid.p);
+  m_victor.Config_kI(pid.slot, pid.i);
+  m_victor.Config_kD(pid.slot, pid.d);
+  m_victor.Config_kF(pid.slot, pid.f);
+  m_victor.Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
 void miscar::Victor::SetCurrentLimit(units::ampere_t limit) {
@@ -67,15 +69,19 @@ void miscar::Victor::SetCurrentLimit(units::ampere_t limit) {
 }
 
 void miscar::Victor::SetPosition(double position) {
-  SetSelectedSensorPosition(position * GetEncoderResolution());
+  m_victor.SetSelectedSensorPosition(position * GetEncoderResolution());
 }
 
 void miscar::Victor::Brake() {
-  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+  m_victor.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
 void miscar::Victor::Coast() {
-  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
+  m_victor.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
 
-void miscar::Victor::Invert() { SetInverted(!GetInverted()); }
+void miscar::Victor::Invert() { m_victor.SetInverted(!m_victor.GetInverted()); }
+
+miscar::Victor::operator ctre::phoenix::motorcontrol::can::VictorSPX&() {
+  return m_victor;
+}

@@ -27,5 +27,6 @@
   "files.associations": {
     "iostream": "cpp"
   },
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "python.pythonPath": "C:\\Users\\imnoa\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"
 }

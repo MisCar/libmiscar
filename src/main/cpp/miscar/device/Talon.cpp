@@ -12,43 +12,44 @@
 constexpr auto TALON_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Talon::Talon(std::string&& name, int id, int encoder_resolution)
-    : BaseMotorController(id, "Talon SRX"),
-      BaseTalon(id, "Talon SRX"),
-      Motor(std::move(name), id, encoder_resolution),
-      TalonSRX(id) {
-  const int current_firmware = GetFirmwareVersion();
+    : Motor(std::move(name), id, encoder_resolution), m_talon(id) {
+  const int current_firmware = m_talon.GetFirmwareVersion();
   if (current_firmware != firmware::TALON) {
     log::Warning(std::string(GetName()) +
                  " has outdated firmware: " + std::to_string(current_firmware) +
                  " when " + std::to_string(firmware::TALON) + " is available.");
   }
 
-  ConfigFactoryDefault();
-  SetInverted(false);
+  m_talon.ConfigFactoryDefault();
+  m_talon.SetInverted(false);
 }
 
-double miscar::Talon::GetPercentOutput() { return GetMotorOutputPercent(); }
+double miscar::Talon::GetPercentOutput() {
+  return m_talon.GetMotorOutputPercent();
+}
 
 double miscar::Talon::GetPosition() {
-  return GetSelectedSensorPosition() / GetEncoderResolution();
+  return m_talon.GetSelectedSensorPosition() / GetEncoderResolution();
 }
 
 double miscar::Talon::GetVelocity() {
-  return GetSelectedSensorVelocity() / GetEncoderResolution() /
+  return m_talon.GetSelectedSensorVelocity() / GetEncoderResolution() /
          TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
 }
 
 void miscar::Talon::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
-      Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output);
+      m_talon.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput,
+                  output);
       break;
     case Position:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Position,
-          output * GetEncoderResolution());
+      m_talon.Set(ctre::phoenix::motorcontrol::ControlMode::Position,
+                  output * GetEncoderResolution());
       break;
     case Velocity:
-      Set(ctre::phoenix::motorcontrol::ControlMode::Velocity,
+      m_talon.Set(
+          ctre::phoenix::motorcontrol::ControlMode::Velocity,
           output * GetEncoderResolution() *
               TALON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value());
       break;
@@ -56,29 +57,33 @@ void miscar::Talon::SetOutput(double output, Mode mode) {
 }
 
 void miscar::Talon::SetPID(PID pid) {
-  Config_kP(pid.slot, pid.p);
-  Config_kI(pid.slot, pid.i);
-  Config_kD(pid.slot, pid.d);
-  Config_kF(pid.slot, pid.f);
-  Config_IntegralZone(pid.slot, pid.integral_zone);
+  m_talon.Config_kP(pid.slot, pid.p);
+  m_talon.Config_kI(pid.slot, pid.i);
+  m_talon.Config_kD(pid.slot, pid.d);
+  m_talon.Config_kF(pid.slot, pid.f);
+  m_talon.Config_IntegralZone(pid.slot, pid.integral_zone);
 }
 
 void miscar::Talon::SetCurrentLimit(units::ampere_t limit) {
-  ConfigSupplyCurrentLimit(
+  m_talon.ConfigSupplyCurrentLimit(
       ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(
           true, limit.value(), 0, 0));
 }
 
 void miscar::Talon::SetPosition(double position) {
-  SetSelectedSensorPosition(position / GetEncoderResolution());
+  m_talon.SetSelectedSensorPosition(position / GetEncoderResolution());
 }
 
 void miscar::Talon::Brake() {
-  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+  m_talon.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
 void miscar::Talon::Coast() {
-  SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
+  m_talon.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
 
-void miscar::Talon::Invert() { SetInverted(!GetInverted()); }
+void miscar::Talon::Invert() { m_talon.SetInverted(!m_talon.GetInverted()); }
+
+miscar::Talon::operator ctre::phoenix::motorcontrol::can::TalonSRX&() {
+  return m_talon;
+}

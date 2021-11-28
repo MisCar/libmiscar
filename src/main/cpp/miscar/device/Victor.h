@@ -15,8 +15,7 @@ namespace miscar {
  * AKA CTRE Victor SPX.
  * http://www.ctr-electronics.com/victor-spx.html
  */
-class Victor : public Motor,
-               public ctre::phoenix::motorcontrol::can::VictorSPX {
+class Victor : public Motor {
   Victor(std::string&& name, int id, int encoder_resolution);
 
   double GetPercentOutput() override;
@@ -30,6 +29,11 @@ class Victor : public Motor,
   void Brake() override;
   void Coast() override;
   void Invert() override;
+
+  explicit operator ctre::phoenix::motorcontrol::can::VictorSPX&();
+
+ private:
+  ctre::phoenix::motorcontrol::can::VictorSPX m_victor;
 };
 
 }  // namespace miscar

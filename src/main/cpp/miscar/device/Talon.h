@@ -15,7 +15,7 @@ namespace miscar {
  * AKA CTRE Talon SRX.
  * https://www.ctr-electronics.com/talon-srx.html
  */
-class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
+class Talon : public Motor {
   Talon(std::string&& name, int id, int encoder_resolution);
 
   double GetPercentOutput() override;
@@ -29,6 +29,11 @@ class Talon : public Motor, public ctre::phoenix::motorcontrol::can::TalonSRX {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+
+  explicit operator ctre::phoenix::motorcontrol::can::TalonSRX&();
+
+ private:
+  ctre::phoenix::motorcontrol::can::TalonSRX m_talon;
 };
 
 }  // namespace miscar

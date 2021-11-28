@@ -14,7 +14,7 @@ namespace miscar {
  * AKA CTRE/VEX Talon FX.
  * https://www.ctr-electronics.com/talon-fx.html
  */
-class Falcon : public Motor, public ctre::phoenix::motorcontrol::can::TalonFX {
+class Falcon : public Motor {
  public:
   Falcon(std::string&& name, int id);
 
@@ -29,6 +29,11 @@ class Falcon : public Motor, public ctre::phoenix::motorcontrol::can::TalonFX {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+
+  explicit operator ctre::phoenix::motorcontrol::can::TalonFX&();
+
+ private:
+  ctre::phoenix::motorcontrol::can::TalonFX m_falcon;
 };
 
 }  // namespace miscar

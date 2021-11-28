@@ -24,19 +24,21 @@ class Convertible : public T {
   /**
    * @param ratio The amount of distance units in a tick.
    */
-  explicit Convertible(T &&t, distance_t ratio) : T(t), m_ratio(ratio) {}
+  template <typename... Args>
+  explicit Convertible(distance_t ratio, Args... args)
+      : T(args...), m_ratio(ratio) {}
 
-  distance_t GetConvertedPosition() { return Motor::GetPosition() * m_ratio; }
+  distance_t GetConvertedPosition() { return T::GetPosition() * m_ratio; }
 
-  velocity_t GetConvertedVelocity() {
-    return Motor::GetVelocity() / 1_s * m_ratio;
-  }
+  velocity_t GetConvertedVelocity() { return T::GetVelocity() / 1_s * m_ratio; }
 
-  [[deprecated("Use GetConvertedPosition() instead")]] double GetPosition() {
+  [[deprecated("Use GetConvertedPosition() instead")]] double GetPosition()
+      override {
     return T::GetPosition();
   }
 
-  [[deprecated("Use GetConvertedVelocity() instead")]] double GetVelocity() {
+  [[deprecated("Use GetConvertedVelocity() instead")]] double GetVelocity()
+      override {
     return T::GetVelocity();
   }
 
