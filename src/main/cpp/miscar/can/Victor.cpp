@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/device/Victor.h"
+#include "miscar/can/Victor.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
@@ -80,7 +80,7 @@ void miscar::Victor::Coast() {
   m_victor.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
 
-void miscar::Victor::Invert() { m_victor.SetInverted(!m_victor.GetInverted()); }
+void miscar::Victor::Invert() { m_victor.SetInverted(true); }
 
 miscar::Victor::operator ctre::phoenix::motorcontrol::can::VictorSPX&() {
   return m_victor;

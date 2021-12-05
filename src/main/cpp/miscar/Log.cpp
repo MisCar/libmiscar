@@ -7,9 +7,9 @@
 #include <frc/Errors.h>
 
 void miscar::log::Warning(const std::string& message) {
-  FRC_ReportError(1574, "[MisCar WARNING] {}", message);
+  FRC_ReportError(frc::err::Error, "[MisCar] {}", message);
 }
 
 void miscar::log::Error(const std::string& message) {
-  FRC_ReportError(1574, "[MisCar ERROR] {}", message);
+  FRC_ReportError(frc::warn::Warning, "[MisCar] {}", message);
 }

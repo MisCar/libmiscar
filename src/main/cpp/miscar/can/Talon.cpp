@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/device/Talon.h"
+#include "miscar/can/Talon.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
@@ -82,7 +82,7 @@ void miscar::Talon::Coast() {
   m_talon.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
 
-void miscar::Talon::Invert() { m_talon.SetInverted(!m_talon.GetInverted()); }
+void miscar::Talon::Invert() { m_talon.SetInverted(true); }
 
 miscar::Talon::operator ctre::phoenix::motorcontrol::can::TalonSRX&() {
   return m_talon;

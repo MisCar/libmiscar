@@ -1,7 +1,10 @@
+// Copyright (c) MisCar 1574
+
 #include <gtest/gtest.h>
+
 #include <units/length.h>
 
-#include "miscar/device/Falcon.h"
+#include "miscar/can/Falcon.h"
 #include "miscar/motor/Convertible.h"
 
 TEST(ConvertibleTest, CanConstruct) {

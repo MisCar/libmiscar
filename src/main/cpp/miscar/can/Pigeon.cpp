@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/device/Pigeon.h"
+#include "miscar/can/Pigeon.h"
 
 #include <frc/MathUtil.h>
 

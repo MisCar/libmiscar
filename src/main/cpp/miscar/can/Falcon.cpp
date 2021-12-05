@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/device/Falcon.h"
+#include "miscar/can/Falcon.h"
 
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
@@ -85,7 +85,7 @@ void miscar::Falcon::Coast() {
   m_falcon.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
 
-void miscar::Falcon::Invert() { m_falcon.SetInverted(!m_falcon.GetInverted()); }
+void miscar::Falcon::Invert() { m_falcon.SetInverted(true); }
 
 miscar::Falcon::operator ctre::phoenix::motorcontrol::can::TalonFX&() {
   return m_falcon;

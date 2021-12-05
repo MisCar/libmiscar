@@ -6,6 +6,9 @@
 
 namespace miscar {
 
-class PS4Controller : public frc::PS4Controller {};
+class PS4Controller : public frc::PS4Controller {
+ public:
+  explicit PS4Controller(int port);
+};
 
 }  // namespace miscar

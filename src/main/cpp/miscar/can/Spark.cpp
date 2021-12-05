@@ -1,6 +1,6 @@
 // Copyright (c) MisCar 1574
 
-#include "miscar/device/Spark.h"
+#include "miscar/can/Spark.h"
 
 #include <rev/CANSparkMax.h>
 #include <units/time.h>
@@ -76,4 +76,4 @@ void miscar::Spark::Brake() { SetIdleMode(rev::CANSparkMax::IdleMode::kBrake); }
 
 void miscar::Spark::Coast() { SetIdleMode(rev::CANSparkMax::IdleMode::kCoast); }
 
-void miscar::Spark::Invert() { SetInverted(!GetInverted()); }
+void miscar::Spark::Invert() { SetInverted(true); }
