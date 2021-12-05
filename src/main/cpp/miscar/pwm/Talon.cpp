@@ -39,3 +39,18 @@ void miscar::pwm::Talon::Coast() {
 }
 
 void miscar::pwm::Talon::Invert() { SetInverted(true); }
+
+double miscar::pwm::Talon::GetPosition() {
+  log::Error("A PWM motor controller doesn't have an encoder!");
+  return 0;
+}
+
+double miscar::pwm::Talon::GetVelocity() {
+  log::Error("A PWM motor controller doesn't have an encoder!");
+  return 0;
+}
+
+double miscar::pwm::Talon::GetPercentOutput() {
+  log::Error("A PWM motor controller can't return prevent output");
+  return 0;
+}

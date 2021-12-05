@@ -14,6 +14,10 @@ class Talon : public Motor, public frc::Talon {
  public:
   explicit Talon(std::string name, int id);
 
+  double GetPercentOutput() override;
+  double GetPosition() override;
+  double GetVelocity() override;
+
   void SetOutput(double output, Mode mode) override;
   void SetPID(PID pid) override;
   void SetCurrentLimit(units::ampere_t limit) override;
