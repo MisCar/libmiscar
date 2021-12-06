@@ -7,6 +7,7 @@
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 
 #include "miscar/motor/Motor.h"
+#include "motor/Motor.h"
 
 namespace miscar {
 
