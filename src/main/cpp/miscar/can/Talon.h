@@ -16,6 +16,7 @@ namespace miscar {
  * https://www.ctr-electronics.com/talon-srx.html
  */
 class Talon : public Motor {
+ public:
   Talon(std::string name, int id, int encoder_resolution);
 
   double GetPercentOutput() override;
