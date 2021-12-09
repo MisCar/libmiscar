@@ -30,7 +30,7 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  protected:
-  void AddAutonomous(std::string_view name, frc2::Command *command);
+  void AddAutonomous(std::string name, frc2::Command *command);
 
  private:
   frc::SendableChooser<frc2::Command *> m_autonomous_chooser;

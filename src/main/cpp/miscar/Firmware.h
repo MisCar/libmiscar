@@ -20,7 +20,7 @@ constexpr int SPARK = 0;
  * The latest Talon firmware version, currently 21.0.
  * https://www.ctr-electronics.com/talon-srx.html#product_tabs_technical_resources
  */
-constexpr int TALON = 0;
+constexpr int TALON = 5376;
 
 /**
  * The latest Victor firmware version, currently 21.0.

@@ -125,7 +125,6 @@ void miscar::Robot::TestPeriodic() {
   }
 }
 
-void miscar::Robot::AddAutonomous(std::string_view name,
-                                  frc2::Command* command) {
-  m_autonomous_chooser.AddOption(std::string(name), command);
+void miscar::Robot::AddAutonomous(std::string name, frc2::Command* command) {
+  m_autonomous_chooser.AddOption(name, command);
 }
