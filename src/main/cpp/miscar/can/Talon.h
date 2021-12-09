@@ -30,6 +30,7 @@ class Talon : public Motor {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+  void Follow(Talon& talon);
 
   explicit operator ctre::phoenix::motorcontrol::can::TalonSRX&();
 
