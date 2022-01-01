@@ -13,7 +13,8 @@ constexpr auto NEO_VELOCITY_SAMPLE_RATE = 100_ms;
 
 miscar::Spark::Spark(std::string name, int id)
     : Motor(name, id, NEO_ENCODER_RESOLUTION),
-      CANSparkMax(id, MotorType::kBrushless) {
+      CANSparkMax(id, MotorType::kBrushless),
+      m_encoder(GetEncoder()) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::SPARK) {
     log::Warning(std::string(GetName()) +
@@ -28,11 +29,11 @@ miscar::Spark::Spark(std::string name, int id)
 double miscar::Spark::GetPercentOutput() { return GetAppliedOutput(); }
 
 double miscar::Spark::GetPosition() {
-  return GetEncoder().GetPosition() / NEO_ENCODER_RESOLUTION;
+  return m_encoder.GetPosition() / NEO_ENCODER_RESOLUTION;
 }
 
 double miscar::Spark::GetVelocity() {
-  return GetEncoder().GetVelocity() / NEO_ENCODER_RESOLUTION /
+  return m_encoder.GetVelocity() / NEO_ENCODER_RESOLUTION /
          NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
 }
 
@@ -69,7 +70,7 @@ void miscar::Spark::SetCurrentLimit(units::ampere_t limit) {
 }
 
 void miscar::Spark::SetPosition(double position) {
-  GetEncoder().SetPosition(position / NEO_ENCODER_RESOLUTION);
+  m_encoder.SetPosition(position / NEO_ENCODER_RESOLUTION);
 }
 
 void miscar::Spark::Brake() { SetIdleMode(rev::CANSparkMax::IdleMode::kBrake); }

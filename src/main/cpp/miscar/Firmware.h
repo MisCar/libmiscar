@@ -14,7 +14,7 @@ constexpr int FALCON = 21 * 16 * 16;
  * The latest Spark firmware version, currently 1.5.4.
  * https://docs.revrobotics.com/sparkmax/software-resources/spark-max-api-information
  */
-constexpr int SPARK = 0;
+constexpr int SPARK = 17104898;
 
 /**
  * The latest Talon firmware version, currently 21.0.

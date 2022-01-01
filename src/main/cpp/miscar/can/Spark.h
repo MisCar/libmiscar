@@ -31,6 +31,9 @@ class Spark : public Motor, public rev::CANSparkMax {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+
+ private:
+  rev::SparkMaxRelativeEncoder m_encoder;
 };
 
 }  // namespace miscar
