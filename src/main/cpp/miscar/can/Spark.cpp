@@ -14,7 +14,8 @@ constexpr auto NEO_VELOCITY_SAMPLE_RATE = 100_ms;
 miscar::Spark::Spark(std::string name, int id)
     : Motor(name, id, NEO_ENCODER_RESOLUTION),
       CANSparkMax(id, MotorType::kBrushless),
-      m_encoder(GetEncoder()) {
+      m_encoder(GetEncoder()),
+      m_controller(GetPIDController()) {
   const int current_firmware = GetFirmwareVersion();
   if (current_firmware != firmware::SPARK) {
     log::Warning(std::string(GetName()) +
@@ -28,14 +29,9 @@ miscar::Spark::Spark(std::string name, int id)
 
 double miscar::Spark::GetPercentOutput() { return GetAppliedOutput(); }
 
-double miscar::Spark::GetPosition() {
-  return m_encoder.GetPosition() / NEO_ENCODER_RESOLUTION;
-}
+double miscar::Spark::GetPosition() { return m_encoder.GetPosition(); }
 
-double miscar::Spark::GetVelocity() {
-  return m_encoder.GetVelocity() / NEO_ENCODER_RESOLUTION /
-         NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
-}
+double miscar::Spark::GetVelocity() { return m_encoder.GetVelocity() / 60; }
 
 void miscar::Spark::SetOutput(double output, Mode mode) {
   switch (mode) {
@@ -43,26 +39,22 @@ void miscar::Spark::SetOutput(double output, Mode mode) {
       Set(output);
       break;
     case Position:
-      GetPIDController().SetReference(output * NEO_ENCODER_RESOLUTION,
+      GetPIDController().SetReference(output,
                                       rev::CANSparkMax::ControlType::kPosition);
       break;
     case Velocity:
-      GetPIDController().SetReference(
-          output * NEO_ENCODER_RESOLUTION *
-              NEO_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value(),
-          rev::CANSparkMax::ControlType::kVelocity);
+      GetPIDController().SetReference(output * 60,
+                                      rev::CANSparkMax::ControlType::kVelocity);
       break;
   }
 }
 
 void miscar::Spark::SetPID(PID pid) {
-  auto controller = GetPIDController();
-
-  controller.SetP(pid.p);
-  controller.SetI(pid.i);
-  controller.SetD(pid.d);
-  controller.SetFF(pid.f);
-  controller.SetIZone(pid.integral_zone);
+  m_controller.SetP(pid.p);
+  m_controller.SetI(pid.i);
+  m_controller.SetD(pid.d);
+  m_controller.SetFF(pid.f);
+  m_controller.SetIZone(pid.integral_zone);
 }
 
 void miscar::Spark::SetCurrentLimit(units::ampere_t limit) {

@@ -34,6 +34,7 @@ class Spark : public Motor, public rev::CANSparkMax {
 
  private:
   rev::SparkMaxRelativeEncoder m_encoder;
+  rev::SparkMaxPIDController m_controller;
 };
 
 }  // namespace miscar
