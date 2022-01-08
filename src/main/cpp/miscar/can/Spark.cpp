@@ -39,12 +39,12 @@ void miscar::Spark::SetOutput(double output, Mode mode) {
       Set(output);
       break;
     case Position:
-      GetPIDController().SetReference(output,
-                                      rev::CANSparkMax::ControlType::kPosition);
+      m_controller.SetReference(output,
+                                rev::CANSparkMax::ControlType::kPosition);
       break;
     case Velocity:
-      GetPIDController().SetReference(output * 60,
-                                      rev::CANSparkMax::ControlType::kVelocity);
+      m_controller.SetReference(output * 60,
+                                rev::CANSparkMax::ControlType::kVelocity);
       break;
   }
 }
