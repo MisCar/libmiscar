@@ -3,16 +3,14 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 http_archive(
     name = "bazelrio",
-    strip_prefix = "bazelRio-beta/bazelrio",
-    url = "https://github.com/noamzaks/bazelrio/archive/refs/heads/beta.zip",
+    sha256 = "63840300af45a0a4f89e9d3e6728858d103765bda44e3d0ea83e35fb5317cdc7",
+    strip_prefix = "bazelRio-0.5.0/bazelrio",
+    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.5.0.zip",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
 
-setup_bazelrio_dependencies(
-    phoenix_version = "5.20.0-beta-1",
-    wpilib_version = "2022.1.1-beta-2",
-)
+setup_bazelrio_dependencies()
 
 load("@bazelrio//:defs.bzl", "setup_bazelrio")
 

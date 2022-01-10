@@ -96,4 +96,6 @@ void SetDefault(const std::string& path, std::vector<std::string> value);
 /** Add a sendable to Network Tables. */
 void Add(const std::string& path, wpi::Sendable& sendable);
 
+std::string Normalize(const std::string& path);
+
 }  // namespace miscar::network
