@@ -87,6 +87,12 @@ void miscar::Falcon::Coast() {
 
 void miscar::Falcon::Invert() { m_falcon.SetInverted(true); }
 
-miscar::Falcon::operator ctre::phoenix::motorcontrol::can::TalonFX&() {
+miscar::Falcon::operator ctre::phoenix::motorcontrol::can::TalonFX &() {
   return m_falcon;
+}
+
+void miscar::Falcon::Follow(miscar::Falcon &falcon) {
+  auto &other_falcon =
+      static_cast<ctre::phoenix::motorcontrol::can::TalonFX &>(falcon);
+  m_falcon.Follow(other_falcon);
 }

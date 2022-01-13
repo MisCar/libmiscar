@@ -29,6 +29,7 @@ class Falcon : public Motor {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+  void Follow(Falcon& falcon);
 
   explicit operator ctre::phoenix::motorcontrol::can::TalonFX&();
 

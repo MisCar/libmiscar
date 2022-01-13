@@ -30,6 +30,7 @@ class Victor : public Motor {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+  void Follow(Victor& victor);
 
   explicit operator ctre::phoenix::motorcontrol::can::VictorSPX&();
 

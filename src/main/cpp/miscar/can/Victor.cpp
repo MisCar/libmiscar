@@ -82,6 +82,12 @@ void miscar::Victor::Coast() {
 
 void miscar::Victor::Invert() { m_victor.SetInverted(true); }
 
-miscar::Victor::operator ctre::phoenix::motorcontrol::can::VictorSPX&() {
+miscar::Victor::operator ctre::phoenix::motorcontrol::can::VictorSPX &() {
   return m_victor;
+}
+
+void miscar::Victor::Follow(miscar::Victor &victor) {
+  auto &other_victor =
+      static_cast<ctre::phoenix::motorcontrol::can::VictorSPX &>(victor);
+  m_victor.Follow(other_victor);
 }
