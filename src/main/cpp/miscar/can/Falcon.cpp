@@ -10,6 +10,7 @@
 
 #include "miscar/Firmware.h"
 #include "miscar/Log.h"
+#include "miscar/motor/Motor.h"
 
 constexpr int FALCON_ENCODER_RESOLUTION = 2048;
 constexpr auto FALCON_VELOCITY_SAMPLE_RATE = 100_ms;
@@ -37,8 +38,10 @@ double miscar::Falcon::GetPosition() {
 
 double miscar::Falcon::GetVelocity() {
   return m_falcon.GetSelectedSensorVelocity() / FALCON_ENCODER_RESOLUTION /
-         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value();
+         FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value() / 60;
 }
+
+double miscar::Falcon::GetVelocityRPM() { return GetVelocity() * 60; }
 
 void miscar::Falcon::SetOutput(double output, Mode mode) {
   switch (mode) {
@@ -95,4 +98,8 @@ void miscar::Falcon::Follow(miscar::Falcon &falcon) {
   auto &other_falcon =
       static_cast<ctre::phoenix::motorcontrol::can::TalonFX &>(falcon);
   m_falcon.Follow(other_falcon);
+}
+
+void miscar::Falcon::SetRPM(double rpm) {
+  SetOutput(rpm / 60, miscar::Motor::Mode::Velocity);
 }

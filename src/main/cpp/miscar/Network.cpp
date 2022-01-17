@@ -5,6 +5,7 @@
 #include <networktables/NetworkTableInstance.h>
 
 #include <string>
+#include <vector>
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -12,6 +13,7 @@
 
 template <>
 bool miscar::network::Get(const std::string &path) {
+  SetDefault(path, false);
   return nt::NetworkTableInstance::GetDefault()
       .GetEntry(Normalize(path))
       .GetBoolean(false);
@@ -19,6 +21,7 @@ bool miscar::network::Get(const std::string &path) {
 
 template <>
 int miscar::network::Get(const std::string &path) {
+  SetDefault(path, 0);
   return nt::NetworkTableInstance::GetDefault()
       .GetEntry(Normalize(path))
       .GetDouble(0);
@@ -26,6 +29,7 @@ int miscar::network::Get(const std::string &path) {
 
 template <>
 double miscar::network::Get(const std::string &path) {
+  SetDefault(path, 0);
   return nt::NetworkTableInstance::GetDefault()
       .GetEntry(Normalize(path))
       .GetDouble(0);
@@ -33,6 +37,8 @@ double miscar::network::Get(const std::string &path) {
 
 template <>
 std::string miscar::network::Get(const std::string &path) {
+  std::string empty = "";
+  SetDefault(path, empty);
   return nt::NetworkTableInstance::GetDefault()
       .GetEntry(Normalize(path))
       .GetString("");
@@ -40,6 +46,8 @@ std::string miscar::network::Get(const std::string &path) {
 
 template <>
 std::vector<bool> miscar::network::Get(const std::string &path) {
+  std::vector<bool> empty = {false};
+  SetDefault(path, empty);
   auto result = nt::NetworkTableInstance::GetDefault()
                     .GetEntry(Normalize(path))
                     .GetBooleanArray({});
@@ -49,6 +57,8 @@ std::vector<bool> miscar::network::Get(const std::string &path) {
 
 template <>
 std::vector<int> miscar::network::Get(const std::string &path) {
+  std::vector<int> empty = {0};
+  SetDefault(path, empty);
   auto result = nt::NetworkTableInstance::GetDefault()
                     .GetEntry(Normalize(path))
                     .GetDoubleArray({});
