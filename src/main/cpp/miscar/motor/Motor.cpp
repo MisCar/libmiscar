@@ -20,3 +20,7 @@ std::vector<miscar::Motor*> miscar::Motor::m_instances = std::vector<Motor*>();
 std::vector<miscar::Motor*>& miscar::Motor::GetInstances() {
   return m_instances;
 }
+
+double miscar::Motor::GetRPM() { return GetVelocity() * 60; }
+
+void miscar::Motor::SetRPM(double rpm) { SetOutput(rpm * 60, Mode::Velocity); }

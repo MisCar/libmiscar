@@ -34,9 +34,15 @@ class Motor {
    * Get the current velocity of the motor's encoder in rotations per second.
    */
   virtual double GetVelocity() = 0;
+  /**
+   * Get the current velocity of the motor's encoder in rotations per minute.
+   */
+  virtual double GetRPM();
 
   /** Set the output of the motor. */
   virtual void SetOutput(double output, Mode mode) = 0;
+  /** Set the output of the motor to the given velocity in RPM. */
+  virtual void SetRPM(double rpm);
   /** Set the PID coefficients for the motor control. */
   virtual void SetPID(PID pid) = 0;
   /** Set a current limit for the motor. */

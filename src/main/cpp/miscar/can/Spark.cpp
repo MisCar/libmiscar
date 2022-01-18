@@ -34,8 +34,6 @@ double miscar::Spark::GetPosition() { return m_encoder.GetPosition(); }
 
 double miscar::Spark::GetVelocity() { return m_encoder.GetVelocity() / 60; }
 
-double miscar::Spark::GetVelocityRPM() { return m_encoder.GetVelocity(); }
-
 void miscar::Spark::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
@@ -66,10 +64,6 @@ void miscar::Spark::SetCurrentLimit(units::ampere_t limit) {
 
 void miscar::Spark::SetPosition(double position) {
   m_encoder.SetPosition(position / NEO_ENCODER_RESOLUTION);
-}
-
-void miscar::Spark::SetRPM(double rpm) {
-  SetOutput(rpm / 60, miscar::Motor::Mode::Velocity);
 }
 
 void miscar::Spark::Brake() { SetIdleMode(rev::CANSparkMax::IdleMode::kBrake); }

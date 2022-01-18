@@ -23,9 +23,7 @@ class Spark : public Motor, public rev::CANSparkMax {
   double GetPercentOutput() override;
   double GetPosition() override;
   double GetVelocity() override;
-  double GetVelocityRPM();
 
-  void SetRPM(double rpm);
   void SetOutput(double output, Mode mode) override;
   void SetPID(PID pid) override;
   void SetCurrentLimit(units::ampere_t limit) override;

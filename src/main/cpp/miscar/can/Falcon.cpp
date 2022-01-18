@@ -41,8 +41,6 @@ double miscar::Falcon::GetVelocity() {
          FALCON_VELOCITY_SAMPLE_RATE.convert<units::seconds>().value() / 60;
 }
 
-double miscar::Falcon::GetVelocityRPM() { return GetVelocity() * 60; }
-
 void miscar::Falcon::SetOutput(double output, Mode mode) {
   switch (mode) {
     case PercentOutput:
@@ -98,8 +96,4 @@ void miscar::Falcon::Follow(miscar::Falcon &falcon) {
   auto &other_falcon =
       static_cast<ctre::phoenix::motorcontrol::can::TalonFX &>(falcon);
   m_falcon.Follow(other_falcon);
-}
-
-void miscar::Falcon::SetRPM(double rpm) {
-  SetOutput(rpm / 60, miscar::Motor::Mode::Velocity);
 }
