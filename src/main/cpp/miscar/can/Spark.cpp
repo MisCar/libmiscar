@@ -70,4 +70,25 @@ void miscar::Spark::Brake() { SetIdleMode(rev::CANSparkMax::IdleMode::kBrake); }
 
 void miscar::Spark::Coast() { SetIdleMode(rev::CANSparkMax::IdleMode::kCoast); }
 
-void miscar::Spark::Invert() { SetInverted(true); }
+void miscar::Spark::Invert() {
+  if (m_leader != nullptr && !m_leader->GetInverted()) {
+    CANSparkMax::Follow(*m_leader, true);
+  } else {
+    SetInverted(true);
+  }
+
+  for (auto follower : m_followers) {
+    follower->Follow(*this, !follower->GetInverted());
+  }
+}
+
+void miscar::Spark::Follow(Spark& spark) {
+  m_leader = &spark;
+  spark.AddFollower(*this);
+  auto invert_leader = GetInverted() != spark.GetInverted();
+  CANSparkMax::Follow(spark, invert_leader);
+}
+
+void miscar::Spark::AddFollower(rev::CANSparkMax& spark) {
+  m_followers.push_back(&spark);
+}

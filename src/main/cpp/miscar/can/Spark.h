@@ -3,6 +3,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <rev/CANSparkMax.h>
 
@@ -31,10 +32,15 @@ class Spark : public Motor, public rev::CANSparkMax {
   void Brake() override;
   void Coast() override;
   void Invert() override;
+  void Follow(Spark &spark);
+  /** Intended for internal use */
+  void AddFollower(rev::CANSparkMax &spark);
 
  private:
   rev::SparkMaxRelativeEncoder m_encoder;
   rev::SparkMaxPIDController m_controller;
+  rev::CANSparkMax *m_leader;
+  std::vector<rev::CANSparkMax *> m_followers;
 };
 
 }  // namespace miscar
