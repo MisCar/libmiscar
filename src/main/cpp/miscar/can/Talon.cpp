@@ -85,6 +85,10 @@ void miscar::Talon::Coast() {
 void miscar::Talon::Invert() { m_talon.SetInverted(true); }
 
 miscar::Talon::operator ctre::phoenix::motorcontrol::can::TalonSRX &() {
+  return GetBaseTalon();
+}
+
+ctre::phoenix::motorcontrol::can::TalonSRX &miscar::Talon::GetBaseTalon() {
   return m_talon;
 }
 

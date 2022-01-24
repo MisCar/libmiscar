@@ -13,78 +13,55 @@
 
 template <>
 bool miscar::network::Get(const std::string &path) {
-  nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .SetBoolean(nt::NetworkTableInstance::GetDefault()
-                      .GetEntry(Normalize(path))
-                      .GetBoolean(false));
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .GetBoolean(false);
+  auto entry = nt::NetworkTableInstance::GetDefault().GetEntry(Normalize(path));
+  auto value = entry.GetBoolean(false);
+  entry.SetBoolean(value);
+  return value;
 }
 
 template <>
 int miscar::network::Get(const std::string &path) {
-  nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .SetDouble(nt::NetworkTableInstance::GetDefault()
-                     .GetEntry(Normalize(path))
-                     .GetDouble(0));
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .GetDouble(0);
+  auto entry = nt::NetworkTableInstance::GetDefault().GetEntry(Normalize(path));
+  auto value = entry.GetDouble(0);
+  entry.SetDouble(value);
+  return value;
 }
 
 template <>
 double miscar::network::Get(const std::string &path) {
-  nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .SetDouble(nt::NetworkTableInstance::GetDefault()
-                     .GetEntry(Normalize(path))
-                     .GetDouble(0));
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .GetDouble(0);
+  auto entry = nt::NetworkTableInstance::GetDefault().GetEntry(Normalize(path));
+  auto value = entry.GetDouble(false);
+  entry.SetDouble(value);
+  return value;
 }
 
 template <>
 std::string miscar::network::Get(const std::string &path) {
-  nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .SetString(nt::NetworkTableInstance::GetDefault()
-                     .GetEntry(Normalize(path))
-                     .GetString(""));
-  return nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .GetString("");
+  auto entry = nt::NetworkTableInstance::GetDefault().GetEntry(Normalize(path));
+
+  auto value = entry.GetString("");
+  entry.SetString(value);
+  return value;
 }
 
 template <>
 std::vector<bool> miscar::network::Get(const std::string &path) {
-  nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .SetBooleanArray(nt::NetworkTableInstance::GetDefault()
-                           .GetEntry(Normalize(path))
-                           .GetBooleanArray({}));
-  auto result = nt::NetworkTableInstance::GetDefault()
-                    .GetEntry(Normalize(path))
-                    .GetBooleanArray({});
+  auto entry = nt::NetworkTableInstance::GetDefault().GetEntry(Normalize(path));
 
-  return std::vector<bool>(result.begin(), result.end());
+  auto value = entry.GetBooleanArray({});
+  entry.SetBooleanArray(value);
+
+  return std::vector<bool>(value.begin(), value.end());
 }
 
 template <>
 std::vector<int> miscar::network::Get(const std::string &path) {
-  nt::NetworkTableInstance::GetDefault()
-      .GetEntry(Normalize(path))
-      .SetDefaultDoubleArray(nt::NetworkTableInstance::GetDefault()
-                                 .GetEntry(Normalize(path))
-                                 .GetDoubleArray({}));
-  auto result = nt::NetworkTableInstance::GetDefault()
-                    .GetEntry(Normalize(path))
-                    .GetDoubleArray({});
+  auto entry = nt::NetworkTableInstance::GetDefault().GetEntry(Normalize(path));
 
-  return std::vector<int>(result.begin(), result.end());
+  auto value = entry.GetDoubleArray({});
+  entry.SetDoubleArray(value);
+
+  return std::vector<int>(value.begin(), value.end());
 }
 
 template <>

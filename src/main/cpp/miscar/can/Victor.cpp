@@ -83,6 +83,10 @@ void miscar::Victor::Coast() {
 void miscar::Victor::Invert() { m_victor.SetInverted(true); }
 
 miscar::Victor::operator ctre::phoenix::motorcontrol::can::VictorSPX &() {
+  return GetBaseVictor();
+}
+
+ctre::phoenix::motorcontrol::can::VictorSPX &miscar::Victor::GetBaseVictor() {
   return m_victor;
 }
 

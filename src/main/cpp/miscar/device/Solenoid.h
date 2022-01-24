@@ -2,26 +2,24 @@
 
 #pragma once
 
-#include <string>
 #include <vector>
 
-#include <frc/Solenoid.h>
+#include "miscar/Named.h"
 
 namespace miscar {
 
-/** A pneumatic solenoid */
-class Solenoid : public frc::Solenoid {
+class Solenoid : public Named {
  public:
-  explicit Solenoid(std::string name, int port);
+  Solenoid(std::string name);
+
+  virtual bool Get() = 0;
+  virtual void Set(bool value);
+  void Flip();
 
   static std::vector<Solenoid *> &GetInstances();
 
-  const std::string &GetName();
-
  private:
   static std::vector<Solenoid *> m_instances;
-
-  std::string m_name;
 };
 
 }  // namespace miscar

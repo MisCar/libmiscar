@@ -8,19 +8,18 @@
 
 #include <units/current.h>
 
+#include "miscar/Named.h"
 #include "miscar/PID.h"
 
 namespace miscar {
 
 /** A common interface for all motor controllers to implement. */
-class Motor {
+class Motor : public Named {
  public:
   Motor(std::string name, int id, int encoder_resolution);
 
   enum Mode { PercentOutput, Position, Velocity };
 
-  /** Get the name of the motor. */
-  const std::string& GetName();
   /** Get the CAN ID of the motor. */
   int GetId();
   /** Get the resolution (counts per revolution) of the motor's encoder. */
@@ -60,7 +59,6 @@ class Motor {
   static std::vector<Motor*>& GetInstances();
 
  private:
-  const std::string m_name;
   const int m_id;
   const int m_encoder_resolution;
 

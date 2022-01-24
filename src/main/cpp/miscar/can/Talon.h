@@ -34,6 +34,8 @@ class Talon : public Motor {
 
   explicit operator ctre::phoenix::motorcontrol::can::TalonSRX&();
 
+  ctre::phoenix::motorcontrol::can::TalonSRX& GetBaseTalon();
+
  private:
   ctre::phoenix::motorcontrol::can::TalonSRX m_talon;
 };

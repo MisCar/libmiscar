@@ -16,7 +16,7 @@ constexpr std::array STARS = {"Zaks",  "Szpiler", "Sheffi", "Toto",
 
 miscar::Robot::Robot() {
   int index = (static_cast<double>(std::rand()) / RAND_MAX) * STARS.size();
-  network::Set("Gever", std::string(STARS[index]));
+  network::Set("Star", std::string(STARS[index]));
 }
 
 miscar::Robot::~Robot() {}
@@ -44,20 +44,6 @@ void miscar::Robot::RobotInit() {
   network::Add("Sensor Motor", m_sensor_motor_chooser);
   network::Add("Autonomous", m_autonomous_chooser);
   network::Add("Graph", m_graph_mode_chooser);
-
-  network::SetDefault("Test/Motors/Enabled", false);
-  network::SetDefault("Test/Motors/Output", 0);
-  network::SetDefault("Test/Motors/SetPID", false);
-  network::SetDefault("Test/Motors/P", 0);
-  network::SetDefault("Test/Motors/I", 0);
-  network::SetDefault("Test/Motors/D", 0);
-  network::SetDefault("Test/Motors/F", 0);
-  network::SetDefault("Test/Motors/I Zone", 0);
-  network::SetDefault("Test/Motors/Slot", 0);
-  network::SetDefault("Test/Motors/Value", 0);
-
-  network::SetDefault("Test/Solenoids/Enabled", false);
-  network::SetDefault("Test/Solenoids/Output", false);
 }
 
 void miscar::Robot::RobotPeriodic() {

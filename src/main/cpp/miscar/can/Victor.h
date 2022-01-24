@@ -34,6 +34,8 @@ class Victor : public Motor {
 
   explicit operator ctre::phoenix::motorcontrol::can::VictorSPX&();
 
+  ctre::phoenix::motorcontrol::can::VictorSPX& GetBaseVictor();
+
  private:
   ctre::phoenix::motorcontrol::can::VictorSPX m_victor;
 };
