@@ -2,184 +2,152 @@
 
 #include "miscar/joystick/PS4Controller.h"
 
-#include "miscar/Fix.h"
+#include <hal/FRCUsageReporting.h>
 
-constexpr double FIX_RANGE = 0.1;
-
-miscar::PS4Controller::PS4Controller(int port) : m_ps4(port) {}
+miscar::PS4Controller::PS4Controller(int port) : GenericHID(port) {
+  HAL_Report(HALUsageReporting::kResourceType_PS4Controller, port + 1);
+}
 
 double miscar::PS4Controller::GetLeftX() const {
-  return miscar::Fix(m_ps4.GetLeftX(), FIX_RANGE);
+  return GetRawAxis(Axis::kLeftX);
 }
 
 double miscar::PS4Controller::GetRightX() const {
-  return miscar::Fix(m_ps4.GetRightX(), FIX_RANGE);
+  return GetRawAxis(Axis::kRightX);
 }
 
 double miscar::PS4Controller::GetLeftY() const {
-  return miscar::Fix(m_ps4.GetLeftY(), FIX_RANGE);
+  return GetRawAxis(Axis::kLeftY);
 }
 
 double miscar::PS4Controller::GetRightY() const {
-  return miscar::Fix(m_ps4.GetRightY(), FIX_RANGE);
+  return GetRawAxis(Axis::kRightY);
 }
 
 double miscar::PS4Controller::GetL2Axis() const {
-  return miscar::Fix(m_ps4.GetL2Axis(), FIX_RANGE);
+  return GetRawAxis(Axis::kL2);
 }
 
 double miscar::PS4Controller::GetR2Axis() const {
-  return miscar::Fix(m_ps4.GetR2Axis(), FIX_RANGE);
+  return GetRawAxis(Axis::kR2);
 }
 
 bool miscar::PS4Controller::GetSquareButton() const {
-  return m_ps4.GetSquareButton();
+  return GetRawButton(Button::kSquare);
 }
 
 bool miscar::PS4Controller::GetSquareButtonPressed() {
-  return m_ps4.GetSquareButtonPressed();
+  return GetRawButtonPressed(Button::kSquare);
 }
 
 bool miscar::PS4Controller::GetSquareButtonReleased() {
-  return m_ps4.GetSquareButtonReleased();
+  return GetRawButtonReleased(Button::kSquare);
 }
 
 bool miscar::PS4Controller::GetCrossButton() const {
-  return m_ps4.GetCrossButton();
+  return GetRawButton(Button::kCross);
 }
 
 bool miscar::PS4Controller::GetCrossButtonPressed() {
-  return m_ps4.GetCrossButtonPressed();
+  return GetRawButtonPressed(Button::kCross);
 }
 
 bool miscar::PS4Controller::GetCrossButtonReleased() {
-  return m_ps4.GetCrossButtonReleased();
+  return GetRawButtonReleased(Button::kCross);
 }
 
 bool miscar::PS4Controller::GetCircleButton() const {
-  return m_ps4.GetCircleButton();
+  return GetRawButton(Button::kCircle);
 }
 
 bool miscar::PS4Controller::GetCircleButtonPressed() {
-  return m_ps4.GetCircleButtonPressed();
+  return GetRawButtonPressed(Button::kCircle);
 }
 
 bool miscar::PS4Controller::GetCircleButtonReleased() {
-  return m_ps4.GetCircleButtonReleased();
+  return GetRawButtonReleased(Button::kCircle);
 }
 
 bool miscar::PS4Controller::GetTriangleButton() const {
-  return m_ps4.GetTriangleButton();
+  return GetRawButton(Button::kTriangle);
 }
 
 bool miscar::PS4Controller::GetTriangleButtonPressed() {
-  return m_ps4.GetTriangleButtonPressed();
+  return GetRawButtonPressed(Button::kTriangle);
 }
 
 bool miscar::PS4Controller::GetTriangleButtonReleased() {
-  return m_ps4.GetTriangleButtonReleased();
+  return GetRawButtonReleased(Button::kTriangle);
 }
 
-bool miscar::PS4Controller::GetL1Button() const { return m_ps4.GetL1Button(); }
+bool miscar::PS4Controller::GetL1Button() const {
+  return GetRawButton(Button::kL1);
+}
 
 bool miscar::PS4Controller::GetL1ButtonPressed() {
-  return m_ps4.GetL1ButtonPressed();
+  return GetRawButtonPressed(Button::kL1);
 }
 
 bool miscar::PS4Controller::GetL1ButtonReleased() {
-  return m_ps4.GetL1ButtonReleased();
+  return GetRawButtonReleased(Button::kL1);
 }
 
-bool miscar::PS4Controller::GetR1Button() const { return m_ps4.GetR1Button(); }
+bool miscar::PS4Controller::GetR1Button() const {
+  return GetRawButton(Button::kR1);
+}
 
 bool miscar::PS4Controller::GetR1ButtonPressed() {
-  return m_ps4.GetR1ButtonPressed();
+  return GetRawButtonPressed(Button::kR1);
 }
 
 bool miscar::PS4Controller::GetR1ButtonReleased() {
-  return m_ps4.GetR1ButtonReleased();
-}
-
-bool miscar::PS4Controller::GetL2Button() const { return m_ps4.GetL2Button(); }
-
-bool miscar::PS4Controller::GetL2ButtonPressed() {
-  return m_ps4.GetL2ButtonPressed();
-}
-
-bool miscar::PS4Controller::GetL2ButtonReleased() {
-  return m_ps4.GetL2ButtonReleased();
-}
-
-bool miscar::PS4Controller::GetR2Button() const { return m_ps4.GetR2Button(); }
-
-bool miscar::PS4Controller::GetR2ButtonPressed() {
-  return m_ps4.GetR2ButtonPressed();
-}
-
-bool miscar::PS4Controller::GetR2ButtonReleased() {
-  return m_ps4.GetR2ButtonReleased();
+  return GetRawButtonReleased(Button::kR1);
 }
 
 bool miscar::PS4Controller::GetShareButton() const {
-  return m_ps4.GetShareButton();
+  return GetRawButton(Button::kShare);
 }
 
 bool miscar::PS4Controller::GetShareButtonPressed() {
-  return m_ps4.GetShareButtonPressed();
+  return GetRawButtonPressed(Button::kShare);
 }
 
 bool miscar::PS4Controller::GetShareButtonReleased() {
-  return m_ps4.GetShareButtonReleased();
+  return GetRawButtonReleased(Button::kShare);
 }
 
 bool miscar::PS4Controller::GetOptionsButton() const {
-  return m_ps4.GetOptionsButton();
+  return GetRawButton(Button::kOptions);
 }
 
 bool miscar::PS4Controller::GetOptionsButtonPressed() {
-  return m_ps4.GetOptionsButtonPressed();
+  return GetRawButtonPressed(Button::kOptions);
 }
 
 bool miscar::PS4Controller::GetOptionsButtonReleased() {
-  return m_ps4.GetOptionsButtonReleased();
+  return GetRawButtonReleased(Button::kOptions);
 }
 
-bool miscar::PS4Controller::GetL3Button() const { return m_ps4.GetL3Button(); }
+bool miscar::PS4Controller::GetL3Button() const {
+  return GetRawButton(Button::kL3);
+}
 
 bool miscar::PS4Controller::GetL3ButtonPressed() {
-  return m_ps4.GetL3ButtonPressed();
+  return GetRawButtonPressed(Button::kL3);
 }
 
 bool miscar::PS4Controller::GetL3ButtonReleased() {
-  return m_ps4.GetL3ButtonReleased();
+  return GetRawButtonReleased(Button::kL3);
 }
 
-bool miscar::PS4Controller::GetR3Button() const { return m_ps4.GetR3Button(); }
+bool miscar::PS4Controller::GetR3Button() const {
+  return GetRawButton(Button::kR3);
+}
 
 bool miscar::PS4Controller::GetR3ButtonPressed() {
-  return m_ps4.GetR3ButtonPressed();
+  return GetRawButtonPressed(Button::kR3);
 }
 
 bool miscar::PS4Controller::GetR3ButtonReleased() {
-  return m_ps4.GetR3ButtonReleased();
-}
-
-bool miscar::PS4Controller::GetPSButton() const { return m_ps4.GetPSButton(); }
-
-bool miscar::PS4Controller::GetPSButtonPressed() {
-  return m_ps4.GetPSButtonPressed();
-}
-
-bool miscar::PS4Controller::GetPSButtonReleased() {
-  return m_ps4.GetPSButtonReleased();
-}
-
-bool miscar::PS4Controller::GetTouchpad() const { return m_ps4.GetTouchpad(); }
-
-bool miscar::PS4Controller::GetTouchpadPressed() {
-  return m_ps4.GetTouchpadPressed();
-}
-
-bool miscar::PS4Controller::GetTouchpadReleased() {
-  return m_ps4.GetTouchpadReleased();
+  return GetRawButtonReleased(Button::kR3);
 }
