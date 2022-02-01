@@ -17,11 +17,11 @@ double miscar::PS4Controller::GetRightX() const {
 }
 
 double miscar::PS4Controller::GetLeftY() const {
-  return -GetRawAxis(Axis::kLeftY);
+  return -1 * GetRawAxis(Axis::kLeftY);
 }
 
 double miscar::PS4Controller::GetRightY() const {
-  return -GetRawAxis(Axis::kRightY);
+  return -1 * GetRawAxis(Axis::kRightY);
 }
 
 double miscar::PS4Controller::GetL2Axis() const {
